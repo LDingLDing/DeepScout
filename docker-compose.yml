@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: deepscout-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: deepscout
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - deepscout-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: deepscout-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - deepscout-network
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://backend:3001/api/v1
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: deepscout-backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    networks:
+      - deepscout-network
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=deepscout
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+
+  crawler:
+    build:
+      context: ./crawler
+      dockerfile: Dockerfile
+    container_name: deepscout-crawler
+    depends_on:
+      - backend
+    networks:
+      - deepscout-network
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://backend:3001/api/v1
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+
+networks:
+  deepscout-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
