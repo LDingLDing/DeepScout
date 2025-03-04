@@ -17,7 +17,7 @@ import { HealthModule } from './modules/health/health.module';
       port: parseInt(process.env.DB_PORT) || 5432,
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
-      database: process.env.DB_DATABASE || 'deepscout',
+      database: process.env.DB_DATABASE || 'inforadar',
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: process.env.NODE_ENV !== 'production', // 生产环境禁用自动同步
     }),

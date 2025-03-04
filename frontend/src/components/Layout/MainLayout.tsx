@@ -65,7 +65,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
   // 移动端菜单抽屉
   const renderMobileMenu = () => (
     <Drawer
-      title="DeepScout"
+      title="InfoRadar"
       placement="left"
       onClose={() => setDrawerVisible(false)}
       open={drawerVisible}
@@ -103,7 +103,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
           fontWeight: 'bold'
         }}
       >
-        {!collapsed && 'DeepScout'}
+        {!collapsed && 'InfoRadar'}
       </div>
       <Menu
         theme="dark"
@@ -138,7 +138,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             />
           )}
           <div style={{ fontWeight: 'bold', fontSize: 18 }}>
-            {!screens.md && 'DeepScout'}
+            {!screens.md && 'InfoRadar'}
           </div>
         </Header>
         

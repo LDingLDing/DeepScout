@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <MainLayout>
       <div style={{ maxWidth: '100%' }}>
-        <Title level={screens.md ? 2 : 3}>智能领域监控系统</Title>
+        <Title level={screens.md ? 2 : 3}>信息雷达</Title>
         <Paragraph>
           通过AI增强的精准信息采集+结构化处理，帮助从业者用1/5时间完成领域动态监控
         </Paragraph>

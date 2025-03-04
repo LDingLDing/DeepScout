@@ -9,7 +9,7 @@ import { logger } from './utils/logger';
  */
 async function startCrawler() {
   try {
-    logger.info('启动 DeepScout 爬虫引擎...');
+    logger.info('启动爬虫引擎...');
     
     // 初始化爬虫池
     await initializeCrawlerPool();
@@ -20,7 +20,7 @@ async function startCrawler() {
     // 启动API服务器
     await startServer();
     
-    logger.info('DeepScout 爬虫引擎已成功启动');
+    logger.info('爬虫引擎已成功启动');
   } catch (error) {
     logger.error('启动爬虫引擎失败:', error);
     process.exit(1);

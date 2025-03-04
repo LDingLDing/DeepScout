@@ -1,7 +1,7 @@
 {
-  "name": "deepscout-backend",
+  "name": "inforadar-backend",
   "version": "1.0.0",
-  "description": "智能领域监控系统后端服务",
+  "description": "信息雷达后端服务",
   "author": "",
   "private": true,
   "license": "MIT",

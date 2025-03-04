@@ -1,7 +1,7 @@
 {
-  "name": "deepscout-crawler",
+  "name": "inforadar-crawler",
   "version": "1.0.0",
-  "description": "智能领域监控系统爬虫引擎",
+  "description": "信息雷达爬虫引擎",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
