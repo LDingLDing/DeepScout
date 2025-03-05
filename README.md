@@ -45,23 +45,43 @@ InfoRadar是一款基于AI增强的智能信息监控系统，通过精准信息
 
 ```
 inforadar/
-├── frontend/           # Next.js前端应用
-│   ├── src/            # 源代码
-│   │   ├── components/ # UI组件
-│   │   ├── pages/      # 页面路由
-│   │   ├── hooks/      # 自定义Hooks
-│   │   ├── services/   # API服务
-│   │   └── utils/      # 工具函数
-│   └── public/         # 静态资源
+├── client/             # 客户端应用
+│   ├── frontend/       # Next.js前端应用
+│   │   ├── src/        # 源代码
+│   │   │   ├── components/ # UI组件
+│   │   │   ├── pages/      # 页面路由
+│   │   │   ├── hooks/      # 自定义Hooks
+│   │   │   ├── services/   # API服务
+│   │   │   └── utils/      # 工具函数
+│   │   └── public/         # 静态资源
+│   │
+│   └── backend/        # NestJS后端服务
+│       ├── src/        # 源代码
+│       │   ├── modules/    # 业务模块
+│       │   ├── entities/   # 数据实体
+│       │   ├── services/   # 服务层
+│       │   ├── resolvers/  # GraphQL解析器
+│       │   └── utils/      # 工具函数
+│       └── test/           # 测试
 │
-├── backend/            # NestJS后端服务
-│   ├── src/            # 源代码
-│   │   ├── modules/    # 业务模块
-│   │   ├── entities/   # 数据实体
-│   │   ├── services/   # 服务层
-│   │   ├── resolvers/  # GraphQL解析器
-│   │   └── utils/      # 工具函数
-│   └── test/           # 测试
+├── staff/              # 后台管理系统
+│   ├── frontend/       # Next.js前端应用
+│   │   ├── src/        # 源代码
+│   │   │   ├── components/ # UI组件
+│   │   │   ├── pages/      # 页面路由
+│   │   │   ├── hooks/      # 自定义Hooks
+│   │   │   ├── services/   # API服务
+│   │   │   └── utils/      # 工具函数
+│   │   └── public/         # 静态资源
+│   │
+│   └── backend/        # NestJS后端服务
+│       ├── src/        # 源代码
+│       │   ├── modules/    # 业务模块
+│       │   ├── entities/   # 数据实体
+│       │   ├── services/   # 服务层
+│       │   ├── resolvers/  # GraphQL解析器
+│       │   └── utils/      # 工具函数
+│       └── test/           # 测试
 │
 ├── crawler/            # Playwright爬虫引擎
 │   ├── src/            # 源代码
@@ -131,6 +151,81 @@ docker-compose up -d
 - API设置：配置AI API密钥和URL
 - 通知设置：配置邮件通知，及时获取任务执行结果
 
+### 4. Staff后台管理系统
+
+#### 功能概述
+
+Staff后台管理系统是InfoRadar项目的内部管理系统，主要功能包括：
+
+- **账号管理**：管理系统内部用户，包括超级管理员、管理员和只读用户
+- **任务日志管理**：查看和管理数据采集任务的执行日志
+
+#### 系统架构
+
+**后端**：
+- 使用NestJS框架
+- TypeORM作为ORM工具
+- PostgreSQL数据库
+- JWT认证
+- 角色权限控制
+
+**前端**：
+- React框架
+- Ant Design组件库
+- 使用Next.js
+
+#### 主要模块
+- **StaffModule**：管理员账号管理
+- **TaskLogsModule**：任务日志管理
+
+#### 数据库表
+- **staff**：管理员表
+- **task_log**：任务日志表
+
+#### 使用说明
+
+1. **环境准备**
+   - 确保已安装Node.js 18+和PostgreSQL 15
+   - 使用pnpm作为包管理器：`npm install -g pnpm`
+
+2. **安装依赖**
+   ```bash
+   cd staff/frontend
+   pnpm install
+   
+   cd ../backend
+   pnpm install
+   ```
+
+3. **配置环境变量**
+   - 复制`.env.example`到`.env`并根据实际情况修改配置
+   - 主要配置项包括数据库连接信息、JWT密钥、管理员账号等
+
+4. **启动服务**
+   ```bash
+   # 启动后端服务
+   cd staff/backend
+   pnpm dev
+   
+   # 启动前端服务
+   cd staff/frontend
+   pnpm dev
+   ```
+
+5. **访问系统**
+   - 前端访问地址：`http://localhost:3002/staff`
+   - 后端API地址：`http://localhost:3003/api/v1`
+   - GraphQL地址：`http://localhost:3003/graphql`
+
+6. **初始账号**
+   - 默认管理员账号：在`.env`文件中配置的ADMIN_USERNAME和ADMIN_PASSWORD
+   - 首次使用需要运行初始化脚本：`cd staff/backend && pnpm seed`
+
+7. **常见问题解决**
+   - 如遇到GraphQL Schema错误，确保至少定义了一个查询类型
+   - 数据库连接问题，检查`.env`文件中的数据库配置是否正确
+   - 更多详细信息请参考`docs/部署指南.md`
+
 ## 贡献指南
 
 我们欢迎各种形式的贡献，包括但不限于：功能开发、bug修复、文档改进、测试用例编写等。
@@ -150,6 +245,4 @@ docker-compose up -d
 - 项目主页：[https://github.com/your-org/inforadar](https://github.com/your-org/inforadar)
 - 问题反馈：[https://github.com/your-org/inforadar/issues](https://github.com/your-org/inforadar/issues)
 
----
 
- 2025 InfoRadar | 版本：1.0.0

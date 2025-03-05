@@ -15,28 +15,63 @@ services:
     networks:
       - inforadar-network
 
-  frontend:
+  client-frontend:
     build:
-      context: ./frontend
+      context: ./client/frontend
       dockerfile: Dockerfile
-    container_name: inforadar-frontend
+    container_name: inforadar-client-frontend
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+      - client-backend
     networks:
       - inforadar-network
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://backend:3001/api/v1
+      - NEXT_PUBLIC_API_URL=http://client-backend:3001/api/v1
 
-  backend:
+  client-backend:
     build:
-      context: ./backend
+      context: ./client/backend
       dockerfile: Dockerfile
-    container_name: inforadar-backend
+    container_name: inforadar-client-backend
     ports:
       - "3001:3001"
+    depends_on:
+      - postgres
+    networks:
+      - inforadar-network
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=inforadar
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+
+  staff-frontend:
+    build:
+      context: ./staff/frontend
+      dockerfile: Dockerfile
+    container_name: inforadar-staff-frontend
+    ports:
+      - "3002:3000"
+    depends_on:
+      - staff-backend
+    networks:
+      - inforadar-network
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://staff-backend:3003/api/v1
+
+  staff-backend:
+    build:
+      context: ./staff/backend
+      dockerfile: Dockerfile
+    container_name: inforadar-staff-backend
+    ports:
+      - "3003:3001"
     depends_on:
       - postgres
     networks:
@@ -56,12 +91,14 @@ services:
       dockerfile: Dockerfile
     container_name: inforadar-crawler
     depends_on:
-      - backend
+      - client-backend
+      - staff-backend
     networks:
       - inforadar-network
     environment:
       - NODE_ENV=development
-      - API_URL=http://backend:3001/api/v1
+      - CLIENT_API_URL=http://client-backend:3001/api/v1
+      - STAFF_API_URL=http://staff-backend:3003/api/v1
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
 
 networks:

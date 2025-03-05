@@ -1,4 +1,6 @@
 packages:
-  - "frontend"
-  - "backend"
+  - "staff/frontend"
+  - "staff/backend"
+  - "client/frontend"
+  - "client/backend"
   - "crawler"

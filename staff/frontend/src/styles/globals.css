@@ -1,0 +1,119 @@
+/* 全局样式 */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Ant Design 自定义样式覆盖 */
+.ant-layout {
+  min-height: 100vh;
+}
+
+.site-layout-content {
+  background: #fff;
+  padding: 24px;
+  min-height: 280px;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ant-row-rtl .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-user-info {
+  color: #fff;
+  margin-right: 12px;
+}
+
+/* 登录页样式 */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.login-form {
+  width: 350px;
+  padding: 30px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+/* 表格样式 */
+.table-operations {
+  margin-bottom: 16px;
+}
+
+.table-operations > button {
+  margin-right: 8px;
+}
+
+/* 状态标签样式 */
+.status-tag-success {
+  color: #52c41a;
+  background: #f6ffed;
+  border-color: #b7eb8f;
+}
+
+.status-tag-error {
+  color: #f5222d;
+  background: #fff1f0;
+  border-color: #ffa39e;
+}
+
+.status-tag-processing {
+  color: #1890ff;
+  background: #e6f7ff;
+  border-color: #91d5ff;
+}
