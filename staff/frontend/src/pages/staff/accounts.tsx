@@ -40,10 +40,11 @@ const StaffAccounts: React.FC = () => {
     
     if (staff) {
       form.setFieldsValue({
+        id: staff.id,
         username: staff.username,
-        name: staff.name,
+        email: staff.email,
         role: staff.role,
-        status: staff.status
+        isActive: staff.isActive
       });
     }
     
@@ -52,26 +53,41 @@ const StaffAccounts: React.FC = () => {
 
   // 打开重置密码模态框
   const showResetPasswordModal = (staffId: number) => {
-    setCurrentStaff(staffList.find(staff => staff.staffid === staffId));
+    setCurrentStaff(staffList.find(staff => staff.id === staffId));
     passwordForm.resetFields();
     setPasswordModalVisible(true);
   };
 
   // 提交表单
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async () => {
     try {
+      // 使用form.validateFields获取表单的值
+      const values = await form.validateFields();
+      
       if (currentStaff) {
         // 更新现有管理员
-        await updateStaff(currentStaff.staffid, values);
+        const updateData = {
+          email: values.email,
+          role: values.role,
+          isActive: typeof values.isActive === 'string' ? values.isActive === 'true' : Boolean(values.isActive)
+        };
+        const result = await updateStaff(currentStaff.id, updateData);
         message.success('管理员信息更新成功');
       } else {
         // 创建新管理员
-        await createStaff(values);
+        const createData = {
+          username: values.username,
+          password: values.password,
+          email: values.email,
+          role: values.role
+        };
+        await createStaff(createData);
         message.success('管理员创建成功');
       }
       
       setModalVisible(false);
-      fetchStaff();
+      // 获取最新的管理人员列表
+      await fetchStaff();
     } catch (error: any) {
       console.error('Form submission failed:', error);
       message.error(error.response?.data?.message || '操作失败');
@@ -81,11 +97,19 @@ const StaffAccounts: React.FC = () => {
   // 重置密码
   const handleResetPassword = async (values: any) => {
     try {
-      if (currentStaff) {
-        await resetPassword(currentStaff.staffid, values.password);
-        message.success('密码重置成功');
-        setPasswordModalVisible(false);
+      if (!currentStaff) {
+        message.error('请选择要操作的管理员');
+        return;
       }
+      
+      if (!values.password) {
+        message.error('密码不能为空');
+        return;
+      }
+      
+      await resetPassword(currentStaff.id, values.password);
+      message.success('密码重置成功');
+      setPasswordModalVisible(false);
     } catch (error: any) {
       console.error('Password reset failed:', error);
       message.error(error.response?.data?.message || '密码重置失败');
@@ -96,8 +120,8 @@ const StaffAccounts: React.FC = () => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'staffid',
-      key: 'staffid',
+      dataIndex: 'id',
+      key: 'id',
       width: 80,
     },
     {
@@ -106,9 +130,9 @@ const StaffAccounts: React.FC = () => {
       key: 'username',
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
       title: '角色',
@@ -116,9 +140,9 @@ const StaffAccounts: React.FC = () => {
       key: 'role',
       render: (role: string) => {
         const roleMap: Record<string, { color: string; label: string }> = {
-          super_admin: { color: 'red', label: '超级管理员' },
           admin: { color: 'blue', label: '管理员' },
-          readonly: { color: 'green', label: '只读用户' },
+          manager: { color: 'green', label: '运营' },
+          viewer: { color: 'default', label: '只读用户' },
         };
         
         const { color, label } = roleMap[role] || { color: 'default', label: role };
@@ -127,25 +151,25 @@ const StaffAccounts: React.FC = () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => {
-        return status === 'active' ? 
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (isActive: boolean) => {
+        return isActive ? 
           <Tag color="success">启用</Tag> : 
           <Tag color="error">禁用</Tag>;
       },
     },
     {
-      title: '最后登录时间',
-      dataIndex: 'last_login',
-      key: 'last_login',
+      title: '最近更新时间',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (time: string) => time ? new Date(time).toLocaleString('zh-CN') : '-',
     },
     {
       title: '创建时间',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (time: string) => new Date(time).toLocaleString('zh-CN'),
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (time: string) => time ? new Date(time).toLocaleString('zh-CN') : '-',
     },
     {
       title: '操作',
@@ -162,7 +186,7 @@ const StaffAccounts: React.FC = () => {
           <Button 
             type="text" 
             icon={<LockOutlined />} 
-            onClick={() => showResetPasswordModal(record.staffid)}
+            onClick={() => showResetPasswordModal(record.id)}
           >
             重置密码
           </Button>
@@ -188,7 +212,7 @@ const StaffAccounts: React.FC = () => {
         <Table 
           columns={columns} 
           dataSource={staffList} 
-          rowKey="staffid"
+          rowKey="id"
           loading={loading}
         />
       </div>
@@ -201,6 +225,7 @@ const StaffAccounts: React.FC = () => {
         onCancel={() => setModalVisible(false)}
         okText={currentStaff ? '更新' : '添加'}
         cancelText="取消"
+        destroyOnClose={true}
       >
         <Form
           form={form}
@@ -218,9 +243,9 @@ const StaffAccounts: React.FC = () => {
           </Form.Item>
           
           <Form.Item
-            name="name"
-            label="姓名"
-            rules={[{ required: true, message: '请输入姓名' }]}
+            name="email"
+            label="邮箱"
+            rules={[{ required: false, message: '请输入邮箱' }]}
           >
             <Input />
           </Form.Item>
@@ -244,21 +269,20 @@ const StaffAccounts: React.FC = () => {
             rules={[{ required: true, message: '请选择角色' }]}
           >
             <Select>
-              <Option value="super_admin">超级管理员</Option>
               <Option value="admin">管理员</Option>
-              <Option value="readonly">只读用户</Option>
+              <Option value="manager">经理</Option>
+              <Option value="viewer">只读用户</Option>
             </Select>
           </Form.Item>
           
           {currentStaff && (
             <Form.Item
-              name="status"
+              name="isActive"
               label="状态"
-              rules={[{ required: true, message: '请选择状态' }]}
             >
               <Select>
-                <Option value="active">启用</Option>
-                <Option value="inactive">禁用</Option>
+                <Option value="true">启用</Option>
+                <Option value="false">禁用</Option>
               </Select>
             </Form.Item>
           )}
@@ -269,7 +293,7 @@ const StaffAccounts: React.FC = () => {
       <Modal
         title="重置密码"
         open={passwordModalVisible}
-        onOk={handleResetPassword}
+        onOk={() => passwordForm.submit()}
         onCancel={() => setPasswordModalVisible(false)}
         okText="确认"
         cancelText="取消"
@@ -277,6 +301,7 @@ const StaffAccounts: React.FC = () => {
         <Form
           form={passwordForm}
           layout="vertical"
+          onFinish={handleResetPassword}
         >
           <Form.Item
             name="password"

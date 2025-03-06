@@ -52,7 +52,8 @@ export class StaffController {
       password?: string;
     }
   ) {
-    return this.staffService.update(Number(id), updateStaffDto);
+    const result = await this.staffService.update(Number(id), updateStaffDto);
+    return result;
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -62,13 +63,18 @@ export class StaffController {
     @Param('id') id: string,
     @Body() resetPasswordDto: { password: string }
   ) {
-    return this.staffService.update(Number(id), { password: resetPasswordDto.password });
+    if (!resetPasswordDto || !resetPasswordDto.password) {
+      throw new Error('Password is required');
+    }
+    
+    const staff = await this.staffService.resetPassword(Number(id), resetPasswordDto.password);
+    return { message: 'Password reset successfully', staff: { id: staff.id, username: staff.username } };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Req() req) {
     // 获取当前登录用户信息
-    return this.staffService.findOne(req.user.sub);
+    return this.staffService.findOne(req.staff.id);
   }
 }

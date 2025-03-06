@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
 import { Staff } from './entities/staff.entity';
+import { JwtService } from '../../services/jwt.service';
 
 @Module({
   imports: [
@@ -13,13 +14,13 @@ import { Staff } from './entities/staff.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET', 'staff-secret-key'),
+        secret: configService.get('JWT_SECRET', 'staff-management-secret-key'),
         signOptions: { expiresIn: configService.get('JWT_EXPIRES_IN', '24h') },
       }),
     }),
   ],
   controllers: [StaffController],
-  providers: [StaffService],
-  exports: [StaffService],
+  providers: [StaffService, JwtService],
+  exports: [StaffService, JwtService],
 })
 export class StaffModule {}

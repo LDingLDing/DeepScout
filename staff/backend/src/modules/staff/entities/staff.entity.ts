@@ -27,7 +27,7 @@ export class Staff {
   @Column({ nullable: true })
   email: string;
 
-  @Column({ default: true })
+  @Column({ default: true, nullable: true })
   isActive: boolean;
 
   @CreateDateColumn()

@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { login } from '../../api/staff';
 import { useRouter } from 'next/router';
+import { useAuth } from '../../contexts/AuthContext';
 import styles from '../../styles/Login.module.css';
 
 const StaffLogin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { isAuthenticated, login: authLogin } = useAuth();
+
+  // 如果已经登录，直接跳转到主页
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/staff/dashboard');
+    }
+  }, [isAuthenticated, router]);
 
   const onFinish = async (values: { username: string; password: string }) => {
     try {
@@ -16,15 +25,14 @@ const StaffLogin: React.FC = () => {
       
       // 存储令牌和用户信息
       const data = response;
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('staff', JSON.stringify(data.staff));
+      authLogin(data.access_token, data.staff);
       
       message.success('登录成功');
       
       // 跳转到主页
       router.push('/staff/dashboard');
     } catch (error: any) {
-      message.error(error.response?.data?.message || '');
+      message.error(error.response?.data?.message || '登录失败，请检查用户名和密码');
     } finally {
       setLoading(false);
     }

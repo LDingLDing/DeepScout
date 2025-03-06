@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Dropdown, Avatar, Button, message } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Menu, Dropdown, Avatar, Button } from 'antd';
 import {
   UserOutlined,
   DashboardOutlined,
@@ -12,7 +12,8 @@ import {
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Staff } from '../../api/staff';
+import { StaffRole } from '../../api/staff';
+import { useAuth } from '../../contexts/AuthContext';
 
 const { Header, Sider, Content } = Layout;
 
@@ -22,60 +23,26 @@ interface StaffLayoutProps {
 
 const StaffLayout: React.FC<StaffLayoutProps> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [staffInfo, setStaffInfo] = useState<Staff | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const { staff, isAuthenticated, isLoading, logout } = useAuth();
 
-  // 在客户端加载时获取用户信息
-  useEffect(() => {
-    // 检查是否已登录
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/staff/login');
-      return;
-    }
-
-    // 获取用户信息
-    const storedStaffInfo = localStorage.getItem('staff');
-    if (storedStaffInfo) {
-      try {
-        setStaffInfo(JSON.parse(storedStaffInfo));
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.error('Failed to parse staff info:', error);
-        handleLogout();
-      }
-    }
-  }, [router]);
-
-  // 注销
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('staff');
-    message.success('已成功退出');
-    router.push('/staff/login');
-  };
-
-  // 判断当前菜单项
+  // 
   const isActive = (path: string) => {
     return router.pathname.includes(path);
   };
 
-  // 用户下拉菜单
+  // 
   const userMenu = (
     <Menu>
-      <Menu.Item key="profile" icon={<UserOutlined />}>
-        个人信息
-      </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        退出
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={logout}>
+        退出登录
       </Menu.Item>
     </Menu>
   );
 
-  // 如果未登录，返回空内容
-  if (!isLoggedIn) {
+  // 
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
@@ -118,7 +85,7 @@ const StaffLayout: React.FC<StaffLayoutProps> = ({ children }) => {
             <Link href="/staff/logs">日志管理</Link>
           </Menu.Item>
           
-          {staffInfo?.role === 'super_admin' && (
+          {staff?.role === StaffRole.ADMIN && (
             <Menu.Item key="accounts" icon={<UserOutlined />}>
               <Link href="/staff/accounts">账号管理</Link>
             </Menu.Item>
@@ -145,7 +112,7 @@ const StaffLayout: React.FC<StaffLayoutProps> = ({ children }) => {
           <Dropdown overlay={userMenu} placement="bottomRight">
             <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
               <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />
-              <span>{staffInfo?.name}</span>
+              <span>{staff?.username}</span>
             </div>
           </Dropdown>
         </Header>

@@ -13,7 +13,7 @@ import { CommonModule } from './common/common.module';
     // 配置模块，加载环境变量
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      envFilePath: [join(process.cwd(), '../../.env')], // 指向项目根目录的.env文件
     }),
     
     // 数据库连接

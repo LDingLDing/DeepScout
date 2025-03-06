@@ -30,7 +30,7 @@ export class StaffService {
   }
 
   async create(createStaffDto: any): Promise<Staff> {
-    const { username, password, email, role } = createStaffDto;
+    const { username, password, email, role, isActive = true } = createStaffDto;
 
     // 检查用户名是否已存在
     const existingStaff = await this.findByUsername(username);
@@ -46,6 +46,7 @@ export class StaffService {
       password: hashedPassword,
       email,
       role,
+      isActive,
     });
 
     return this.staffRepository.save(staff);
@@ -58,9 +59,22 @@ export class StaffService {
     if (updateStaffDto.password) {
       updateStaffDto.password = await bcrypt.hash(updateStaffDto.password, 10);
     }
+    
+    // 处理isActive属性，确保其值为布尔类型
+    if (updateStaffDto.isActive !== undefined) {
+      updateStaffDto.isActive = updateStaffDto.isActive === true || updateStaffDto.isActive === 'true';
+    }
 
-    Object.assign(staff, updateStaffDto);
-    return this.staffRepository.save(staff);
+    // 使用queryBuilder直接更新数据库
+    try {
+      // 使用queryBuilder直接更新数据库
+      await this.staffRepository.update(id, updateStaffDto);
+      // 查询更新后的员工信息
+      const updatedStaff = await this.findOne(id);
+      return updatedStaff;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async remove(id: number): Promise<void> {
@@ -96,5 +110,25 @@ export class StaffService {
         role: staff.role,
       },
     };
+  }
+
+  async resetPassword(id: number, password: string): Promise<Staff> {
+    if (!id) {
+      throw new Error('Staff ID is required');
+    }
+    
+    if (!password) {
+      throw new Error('Password is required');
+    }
+    
+    const staff = await this.findOne(id);
+    
+    // 密码加密
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // 更新密码，TypeORM会自动处理updatedAt
+    staff.password = hashedPassword;
+    const savedStaff = await this.staffRepository.save(staff);
+    return savedStaff;
   }
 }

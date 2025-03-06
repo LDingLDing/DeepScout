@@ -22,7 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       
       // 将用户信息附加到请求对象
       request.staff = {
-        staffid: payload.staffid,
+        id: payload.sub,
         username: payload.username,
         role: payload.role
       };
