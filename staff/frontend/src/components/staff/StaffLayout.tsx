@@ -70,24 +70,24 @@ const StaffLayout: React.FC<StaffLayoutProps> = ({ children }) => {
         
         <Menu theme="dark" mode="inline" selectedKeys={[isActive('/dashboard') ? 'dashboard' : isActive('/sources') ? 'sources' : isActive('/tasks') ? 'tasks' : isActive('/logs') ? 'logs' : isActive('/accounts') ? 'accounts' : '']}>
           <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
-            <Link href="/staff/dashboard">仪表盘</Link>
+            <Link href="/dashboard">仪表盘</Link>
           </Menu.Item>
           
           <Menu.Item key="sources" icon={<ApiOutlined />}>
-            <Link href="/staff/sources">数据源管理</Link>
+            <Link href="/sources">信息源管理</Link>
           </Menu.Item>
           
           <Menu.Item key="tasks" icon={<CodeOutlined />}>
-            <Link href="/staff/tasks">任务管理</Link>
+            <Link href="/tasks">任务管理</Link>
           </Menu.Item>
           
           <Menu.Item key="logs" icon={<FileTextOutlined />}>
-            <Link href="/staff/logs">日志管理</Link>
+            <Link href="/logs">日志管理</Link>
           </Menu.Item>
           
           {staff?.role === StaffRole.ADMIN && (
             <Menu.Item key="accounts" icon={<UserOutlined />}>
-              <Link href="/staff/accounts">账号管理</Link>
+              <Link href="/accounts">账号管理</Link>
             </Menu.Item>
           )}
         </Menu>

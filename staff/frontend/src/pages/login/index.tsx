@@ -14,7 +14,7 @@ const StaffLogin: React.FC = () => {
   // 如果已经登录，直接跳转到主页
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/staff/dashboard');
+      router.push('/dashboard');
     }
   }, [isAuthenticated, router]);
 
@@ -30,7 +30,7 @@ const StaffLogin: React.FC = () => {
       message.success('登录成功');
       
       // 跳转到主页
-      router.push('/staff/dashboard');
+      router.push('/dashboard');
     } catch (error: any) {
       message.error(error.response?.data?.message || '登录失败，请检查用户名和密码');
     } finally {

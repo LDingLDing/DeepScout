@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setStaff(null);
     setIsAuthenticated(false);
     message.success('已成功退出');
-    router.push('/staff/login');
+    router.push('/login');
   };
 
   return (

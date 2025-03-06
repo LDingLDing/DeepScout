@@ -7,6 +7,8 @@ import { join } from 'path';
 import { StaffModule } from './modules/staff/staff.module';
 import { TaskLogsModule } from './modules/task-logs/task-logs.module';
 import { CommonModule } from './common/common.module';
+import { SourcesModule } from './modules/sources/sources.module';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { CommonModule } from './common/common.module';
     // 应用模块
     StaffModule,
     TaskLogsModule,
+    SourcesModule,
+    TasksModule,
     CommonModule,
   ],
 })

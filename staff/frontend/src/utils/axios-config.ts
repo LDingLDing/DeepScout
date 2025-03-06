@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use(
       
       // 重定向到登录页
       setTimeout(() => {
-        window.location.href = '/staff/login';
+        window.location.href = '/login';
       }, 1500);
     } else if (error.response && error.response.data) {
       // 显示后端返回的错误信息
