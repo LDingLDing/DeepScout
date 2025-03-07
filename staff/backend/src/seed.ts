@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { StaffService } from './modules/staff/staff.service';
-import { StaffRole } from './modules/staff/entities/staff.entity';
+import { StaffRole } from './modules/staff/entities/staff-user.entity';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -11,23 +11,24 @@ async function bootstrap() {
 
   try {
     // 检查是否已存在超级管理员
-    const defaultUsername = configService.get('ADMIN_USERNAME', 'admin');
-    const defaultPassword = configService.get('ADMIN_PASSWORD', 'admin123');
     const defaultEmail = configService.get('ADMIN_EMAIL', 'admin@example.com');
+    const defaultPassword = configService.get('ADMIN_PASSWORD', 'admin123');
+    const defaultName = configService.get('ADMIN_NAME', 'Administrator');
     
-    const existingAdmin = await staffService.findByUsername(defaultUsername);
+    const existingAdmin = await staffService.findByEmail(defaultEmail);
     
     if (!existingAdmin) {
       // 创建超级管理员
       await staffService.create({
-        username: defaultUsername,
-        password: defaultPassword,
         email: defaultEmail,
+        password: defaultPassword,
+        name: defaultName,
         role: StaffRole.ADMIN,
       });
       console.log('超级管理员创建成功！');
-      console.log(`用户名: ${defaultUsername}`);
+      console.log(`邮箱: ${defaultEmail}`);
       console.log(`密码: ${defaultPassword}`);
+      console.log(`姓名: ${defaultName}`);
     } else {
       console.log('超级管理员已存在，跳过创建。');
     }

@@ -4,12 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
-import { Staff } from './entities/staff.entity';
+import { StaffUser } from './entities/staff-user.entity';
 import { JwtService } from '../../services/jwt.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Staff]),
+    TypeOrmModule.forFeature([StaffUser]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

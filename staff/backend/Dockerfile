@@ -1,17 +1,17 @@
 FROM node:18-alpine AS base
 
-# u5b89u88c5u4f9du8d56
+# 安装依赖阶段
 FROM base AS deps
 WORKDIR /app
 
-# u5b89u88c5pnpm
+# 安装 pnpm
 RUN npm install -g pnpm
 
-# u590du5236package.jsonu6587u4ef6
+# 复制 package.json 文件并安装依赖
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile
 
-# u6784u5efau5e94u7528
+# 构建阶段
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -19,7 +19,7 @@ COPY . .
 
 RUN npm run build
 
-# u751fu4ea7u73afu5883
+# 生产环境阶段
 FROM base AS runner
 WORKDIR /app
 

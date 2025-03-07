@@ -1,6 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { ScriptFile } from './script-file.entity';
 
+export enum ScriptTaskStatus {
+  PENDING = 'pending',
+  RUNNING = 'running',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+  CANCELLED = 'cancelled'
+}
+
 @Entity('script_task')
 export class ScriptTask {
   @PrimaryGeneratedColumn()
@@ -9,8 +17,12 @@ export class ScriptTask {
   @Column({ name: 'script_id' })
   scriptId: number;
 
-  @Column()
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: ScriptTaskStatus,
+    default: ScriptTaskStatus.PENDING
+  })
+  status: ScriptTaskStatus;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

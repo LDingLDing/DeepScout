@@ -27,6 +27,7 @@
     "@nestjs/jwt": "^10.0.3",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.0",
+    "@nestjs/swagger": "^11.0.6",
     "@nestjs/typeorm": "^9.0.1",
     "@types/bcryptjs": "^2.4.6",
     "apollo-server-core": "^3.13.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^9.4.0",
+    "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/schematics": "^9.1.0",
     "@nestjs/testing": "^9.4.0",
     "@types/bcrypt": "^5.0.0",

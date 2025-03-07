@@ -1,6 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { ScriptTask } from './script-task.entity';
 
+export enum ScriptTaskLogStatus {
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error'
+}
+
 @Entity('script_task_log')
 export class ScriptTaskLog {
   @PrimaryGeneratedColumn()
@@ -12,8 +18,12 @@ export class ScriptTaskLog {
   @Column({ type: 'text' })
   content: string;
 
-  @Column()
-  type: string;
+  @Column({
+    type: 'enum',
+    enum: ScriptTaskLogStatus,
+    default: ScriptTaskLogStatus.INFO
+  })
+  status: ScriptTaskLogStatus;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

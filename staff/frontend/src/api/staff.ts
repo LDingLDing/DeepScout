@@ -1,11 +1,6 @@
 import axiosInstance from '../utils/axios-config';
+import { StaffRole } from '../modules/staff/entities/staff-user.entity';
 
-// Staff角色枚举
-export enum StaffRole {
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-  VIEWER = 'viewer',
-}
 
 // Staff接口类型
 export interface Staff {

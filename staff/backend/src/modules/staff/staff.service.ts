@@ -1,23 +1,26 @@
 import { Injectable, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Staff, StaffRole } from './entities/staff.entity';
+import { StaffUser } from './entities/staff-user.entity';
+import { CreateStaffDto } from './dto/create-staff.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
+import { LoginStaffDto } from './dto/login-staff.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class StaffService {
   constructor(
-    @InjectRepository(Staff)
-    private staffRepository: Repository<Staff>,
+    @InjectRepository(StaffUser)
+    private staffRepository: Repository<StaffUser>,
     private jwtService: JwtService,
   ) {}
 
-  async findAll(): Promise<Staff[]> {
+  async findAll(): Promise<StaffUser[]> {
     return this.staffRepository.find();
   }
 
-  async findOne(id: number): Promise<Staff> {
+  async findOne(id: number): Promise<StaffUser> {
     const staff = await this.staffRepository.findOne({ where: { id } });
     if (!staff) {
       throw new NotFoundException(`Staff with ID ${id} not found`);
@@ -25,56 +28,51 @@ export class StaffService {
     return staff;
   }
 
-  async findByUsername(username: string): Promise<Staff> {
-    return this.staffRepository.findOne({ where: { username } });
+  async findByEmail(email: string): Promise<StaffUser> {
+    return this.staffRepository.findOne({ where: { email } });
   }
 
-  async create(createStaffDto: any): Promise<Staff> {
-    const { username, password, email, role, isActive = true } = createStaffDto;
+  async create(createStaffDto: CreateStaffDto): Promise<StaffUser> {
+    const { email, password, name, role } = createStaffDto;
 
-    // 检查用户名是否已存在
-    const existingStaff = await this.findByUsername(username);
+    // 检查邮箱是否已存在
+    const existingStaff = await this.findByEmail(email);
     if (existingStaff) {
-      throw new ConflictException(`Username ${username} already exists`);
+      throw new ConflictException(`Email ${email} already exists`);
     }
 
     // 密码加密
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const staff = this.staffRepository.create({
-      username,
-      password: hashedPassword,
       email,
+      password: hashedPassword,
+      name,
       role,
-      isActive,
     });
 
     return this.staffRepository.save(staff);
   }
 
-  async update(id: number, updateStaffDto: any): Promise<Staff> {
+  async update(id: number, updateStaffDto: UpdateStaffDto): Promise<StaffUser> {
     const staff = await this.findOne(id);
 
     // 如果更新密码，需要加密
     if (updateStaffDto.password) {
       updateStaffDto.password = await bcrypt.hash(updateStaffDto.password, 10);
     }
-    
-    // 处理isActive属性，确保其值为布尔类型
-    if (updateStaffDto.isActive !== undefined) {
-      updateStaffDto.isActive = updateStaffDto.isActive === true || updateStaffDto.isActive === 'true';
+
+    // 如果更新邮箱，检查是否已存在
+    if (updateStaffDto.email && updateStaffDto.email !== staff.email) {
+      const existingStaff = await this.findByEmail(updateStaffDto.email);
+      if (existingStaff) {
+        throw new ConflictException(`Email ${updateStaffDto.email} already exists`);
+      }
     }
 
-    // 使用queryBuilder直接更新数据库
-    try {
-      // 使用queryBuilder直接更新数据库
-      await this.staffRepository.update(id, updateStaffDto);
-      // 查询更新后的员工信息
-      const updatedStaff = await this.findOne(id);
-      return updatedStaff;
-    } catch (error) {
-      throw error;
-    }
+    // 使用Object.assign更新实体
+    Object.assign(staff, updateStaffDto);
+    return this.staffRepository.save(staff);
   }
 
   async remove(id: number): Promise<void> {
@@ -82,8 +80,8 @@ export class StaffService {
     await this.staffRepository.remove(staff);
   }
 
-  async validateStaff(username: string, password: string): Promise<Staff> {
-    const staff = await this.findByUsername(username);
+  async validateStaff(email: string, password: string): Promise<StaffUser> {
+    const staff = await this.findByEmail(email);
     if (!staff) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -96,27 +94,23 @@ export class StaffService {
     return staff;
   }
 
-  async login(loginDto: any) {
-    const { username, password } = loginDto;
-    const staff = await this.validateStaff(username, password);
+  async login(loginDto: LoginStaffDto) {
+    const { email, password } = loginDto;
+    const staff = await this.validateStaff(email, password);
 
-    const payload = { sub: staff.id, username: staff.username, role: staff.role };
+    const payload = { sub: staff.id, email: staff.email, role: staff.role };
     return {
       access_token: this.jwtService.sign(payload),
       staff: {
         id: staff.id,
-        username: staff.username,
         email: staff.email,
+        name: staff.name,
         role: staff.role,
       },
     };
   }
 
-  async resetPassword(id: number, password: string): Promise<Staff> {
-    if (!id) {
-      throw new Error('Staff ID is required');
-    }
-    
+  async resetPassword(id: number, password: string): Promise<StaffUser> {
     if (!password) {
       throw new Error('Password is required');
     }
@@ -126,9 +120,8 @@ export class StaffService {
     // 密码加密
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // 更新密码，TypeORM会自动处理updatedAt
+    // 更新密码
     staff.password = hashedPassword;
-    const savedStaff = await this.staffRepository.save(staff);
-    return savedStaff;
+    return this.staffRepository.save(staff);
   }
 }

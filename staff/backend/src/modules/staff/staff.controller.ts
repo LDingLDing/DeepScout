@@ -1,28 +1,26 @@
 import { Controller, Get, Post, Patch, Param, Body, UseGuards, Req } from '@nestjs/common';
 import { StaffService } from './staff.service';
-import { StaffRole } from './entities/staff.entity';
+import { StaffRole } from './entities/staff-user.entity';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
+import { CreateStaffDto } from './dto/create-staff.dto';
+import { UpdateStaffDto } from './dto/update-staff.dto';
+import { LoginStaffDto } from './dto/login-staff.dto';
 
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
   @Post('login')
-  async login(@Body() loginDto: { username: string; password: string }) {
+  async login(@Body() loginDto: LoginStaffDto) {
     return this.staffService.login(loginDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(StaffRole.ADMIN)
   @Post()
-  async create(@Body() createStaffDto: { 
-    username: string; 
-    password: string; 
-    email?: string; 
-    role: StaffRole 
-  }) {
+  async create(@Body() createStaffDto: CreateStaffDto) {
     return this.staffService.create(createStaffDto);
   }
 
@@ -45,12 +43,7 @@ export class StaffController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateStaffDto: {
-      email?: string;
-      role?: StaffRole;
-      isActive?: boolean;
-      password?: string;
-    }
+    @Body() updateStaffDto: UpdateStaffDto
   ) {
     const result = await this.staffService.update(Number(id), updateStaffDto);
     return result;
@@ -68,7 +61,7 @@ export class StaffController {
     }
     
     const staff = await this.staffService.resetPassword(Number(id), resetPasswordDto.password);
-    return { message: 'Password reset successfully', staff: { id: staff.id, username: staff.username } };
+    return { message: 'Password reset successfully', staff: { id: staff.id, email: staff.email } };
   }
 
   @UseGuards(JwtAuthGuard)
