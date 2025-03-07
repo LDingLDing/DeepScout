@@ -1,62 +1,37 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Staff } from '../../staff/entities/staff.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Source } from '../../sources/entities/source.entity';
 
-export enum TaskStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  ERROR = 'error',
+export enum SourceType {
+  WEB = 'web',
+  RSS = 'rss',
+  WECHAT = 'wechat'
 }
 
-@Entity()
+@Entity('tasks')
 export class Task {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'task_id' })
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
+  @Column({ name: 'source_id' })
   sourceId: number;
 
-  @Column({ nullable: true, type: 'text' })
-  description: string;
-
-  @Column({ nullable: true })
-  currentVersionId: number;
-
-  @Column({ nullable: true })
-  schedule: string;
-
   @Column({
+    name: 'source_type',
     type: 'enum',
-    enum: TaskStatus,
-    default: TaskStatus.INACTIVE,
+    enum: SourceType
   })
-  status: TaskStatus;
+  sourceType: SourceType;
 
-  @Column({ nullable: true, type: 'timestamp' })
-  lastRunAt: Date;
-
-  @Column({ nullable: true, type: 'timestamp' })
-  nextRunAt: Date;
+  @Column({ type: 'text' })
+  code: string;
 
   @Column()
-  createdBy: number;
+  version: number;
 
-  @ManyToOne(() => Staff)
-  @JoinColumn({ name: 'createdBy' })
-  creator: Staff;
-
-  @Column({ nullable: true })
-  updatedBy: number;
-
-  @ManyToOne(() => Staff)
-  @JoinColumn({ name: 'updatedBy' })
-  updater: Staff;
-
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @ManyToOne(() => Source)
+  @JoinColumn({ name: 'source_id' })
+  source: Source;
 }

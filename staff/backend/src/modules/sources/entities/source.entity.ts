@@ -14,9 +14,9 @@ export enum SourceStatus {
   INACTIVE = 'inactive',
 }
 
-@Entity()
+@Entity('sources')
 export class Source {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'sourceid' })
   id: number;
 
   @Column({ length: 100 })
@@ -58,9 +58,9 @@ export class Source {
   @JoinColumn({ name: 'updatedBy' })
   updater: Staff;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
