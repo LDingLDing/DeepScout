@@ -6,10 +6,13 @@ export enum StaffRole {
   VIEWER = 'viewer',
 }
 
-@Entity()
-export class Staff {
+@Entity('staff_users')
+export class StaffUser {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ unique: true })
+  email: string;
 
   @Column({ unique: true })
   username: string;
@@ -24,15 +27,12 @@ export class Staff {
   })
   role: StaffRole;
 
-  @Column({ nullable: true })
-  email: string;
-
-  @Column({ default: true, nullable: true })
+  @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
