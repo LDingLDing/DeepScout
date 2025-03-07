@@ -5,6 +5,7 @@ import { ScriptTasksController } from './script-tasks.controller';
 import { ScriptFile } from './entities/script-file.entity';
 import { ScriptTask } from './entities/script-task.entity';
 import { ScriptTaskLog } from './entities/script-task-log.entity';
+import { ScriptTasksResolver } from './script-tasks.resolver';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ScriptTaskLog } from './entities/script-task-log.entity';
     ]),
   ],
   controllers: [ScriptTasksController],
-  providers: [ScriptTasksService],
+  providers: [ScriptTasksService, ScriptTasksResolver],
   exports: [ScriptTasksService],
 })
 export class ScriptTasksModule {}
