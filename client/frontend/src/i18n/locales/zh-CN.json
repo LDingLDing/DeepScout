@@ -27,6 +27,12 @@
     "subscribers": "位订阅者"
   },
   "subscriptions": {
+    "all": "全部",
+    "unknownTopic": "未知话题",
+    "noContent": "暂无订阅内容",
+    "loading": "加载中...",
+    "noMoreContent": "没有更多内容了",
+    "fetchError": "获取订阅内容失败:",
     "selectAll": "选中全部",
     "cancelAll": "取消全部",
     "readTime": "{{time}}阅读"
@@ -34,5 +40,11 @@
   "article": {
     "expand": "展开全文",
     "collapse": "收起"
+  },
+  "articleCard": {
+    "readMore": "阅读全文",
+    "collapse": "收起",
+    "secondsRead": "{{seconds}}秒阅读",
+    "minutesRead": "{{minutes}}分钟阅读"
   }
 }

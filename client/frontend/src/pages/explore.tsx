@@ -3,25 +3,39 @@ import { SearchBar } from 'antd-mobile';
 import { useQuery } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import TopicCard from '../components/TopicCard/TopicCard';
-import { fetchTopics } from '../mock/api';
+import { topicsApi } from '../services/api';
 import styles from './explore.module.scss';
+
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  subscribers: number;
+  hot: boolean;
+  isSubscribed: boolean;
+}
 
 const ExplorePage = () => {
   const { t, i18n } = useTranslation();
   const [searchText, setSearchText] = useState('');
-  const { data: topics = [] } = useQuery('topics', fetchTopics);
-  const currentLanguage = i18n.language as 'zh-CN' | 'en-US';
+  const { data: topics = [], refetch } = useQuery<Topic[]>('topics', topicsApi.getTopics);
 
-  const handleSubscribe = (id: string) => {
-    // TODO: 实现订阅功能
-    console.log('Subscribe to:', id);
+  const handleSubscribe = async (id: string) => {
+    try {
+      await topicsApi.toggleSubscription(id);
+      // 刷新话题列表以获取最新的订阅状态
+      refetch();
+    } catch (error) {
+      console.error('订阅失败:', error);
+    }
   };
 
-  const filteredTopics = topics.filter(topic => {
+  const filteredTopics = topics.filter((topic: Topic) => {
     if (!searchText) return true;
     const searchLower = searchText.toLowerCase();
-    const titleLower = topic.title[currentLanguage].toLowerCase();
-    const descLower = topic.description[currentLanguage].toLowerCase();
+    const titleLower = topic.title.toLowerCase();
+    const descLower = topic.description.toLowerCase();
     return titleLower.includes(searchLower) || descLower.includes(searchLower);
   });
 
@@ -34,7 +48,7 @@ const ExplorePage = () => {
         className={styles.searchBar}
       />
       <div className={styles.topicList}>
-        {filteredTopics.map((topic) => (
+        {filteredTopics.map((topic: Topic) => (
           <TopicCard
             key={topic.id}
             {...topic}

@@ -113,3 +113,42 @@
   display: flex;
   gap: 16px;
 }
+
+.topicFilter {
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.subscriptionList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loadMoreIndicator {
+  padding: 16px 0;
+  text-align: center;
+}
+
+.loadingMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.noMoreData {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--secondary-color);
+  font-size: 16px;
+}

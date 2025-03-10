@@ -27,6 +27,12 @@
     "subscribers": "subscribers"
   },
   "subscriptions": {
+    "all": "All",
+    "unknownTopic": "Unknown Topic",
+    "noContent": "No subscription content",
+    "loading": "Loading...",
+    "noMoreContent": "No more content",
+    "fetchError": "Failed to fetch subscriptions:",
     "selectAll": "Select All",
     "cancelAll": "Cancel All",
     "readTime": "{{time}} read"
@@ -34,5 +40,11 @@
   "article": {
     "expand": "Read more",
     "collapse": "Show less"
+  },
+  "articleCard": {
+    "readMore": "Read more",
+    "collapse": "Show less",
+    "secondsRead": "{{seconds}} seconds read",
+    "minutesRead": "{{minutes}} minutes read"
   }
 }
