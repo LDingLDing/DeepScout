@@ -11,7 +11,14 @@
     "theme": "Theme",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "personalInfo": "Personal Information",
+    "email": "Email",
+    "copy": "Copy",
+    "emailCopied": "Email copied",
+    "logout": "Logout",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "logoutSuccess": "Logged out successfully"
   },
   "explore": {
     "searchPlaceholder": "Search topics",

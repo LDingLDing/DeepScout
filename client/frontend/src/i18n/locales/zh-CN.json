@@ -11,7 +11,14 @@
     "theme": "主题",
     "light": "浅色",
     "dark": "深色",
-    "system": "跟随系统"
+    "system": "跟随系统",
+    "personalInfo": "个人信息",
+    "email": "邮箱",
+    "copy": "复制",
+    "emailCopied": "邮箱已复制",
+    "logout": "退出登录",
+    "logoutConfirm": "确定要退出登录吗？",
+    "logoutSuccess": "已退出登录"
   },
   "explore": {
     "searchPlaceholder": "搜索话题",

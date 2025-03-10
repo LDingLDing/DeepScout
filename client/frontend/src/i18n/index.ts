@@ -25,16 +25,14 @@ const getClientLanguage = () => {
   return browserLang.startsWith('zh') ? 'zh-CN' : 'en-US';
 };
 
-const i18nConfig = {
+i18n.use(initReactI18next).init({
   resources,
   lng: 'zh-CN', // 服务端默认使用中文
   fallbackLng: 'zh-CN',
   interpolation: {
     escapeValue: false,
   },
-};
-
-i18n.use(initReactI18next).init(i18nConfig);
+});
 
 // 客户端初始化后，设置正确的语言
 if (typeof window !== 'undefined') {

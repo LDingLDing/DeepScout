@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useTranslation } from 'react-i18next';
 import AppLayout from '../components/Layout/AppLayout';
@@ -11,14 +11,14 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const { i18n } = useTranslation();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // 在客户端初始化时，从本地存储获取语言设置
+    setIsClient(true);
     const storedLang = localStorage.getItem('language');
     if (storedLang && (storedLang === 'zh-CN' || storedLang === 'en-US')) {
       i18n.changeLanguage(storedLang);
     } else {
-      // 如果没有存储的语言设置，使用浏览器语言
       const browserLang = navigator.language;
       const lang = browserLang.startsWith('zh') ? 'zh-CN' : 'en-US';
       i18n.changeLanguage(lang);
@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <AppLayout>
-        <Component {...pageProps} />
+        {isClient ? <Component {...pageProps} /> : null}
       </AppLayout>
     </QueryClientProvider>
   );
