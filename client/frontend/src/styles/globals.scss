@@ -1,0 +1,116 @@
+@import './theme.scss';
+
+:root {
+  --primary-color: #333;
+  --bg-primary: #F7F7F7;
+  --link-color: #337ab7;
+  --link-hover-color: #23527c;
+  --border-color: #ddd;
+  --secondary-color: #666;
+  --tertiary-color: #999;
+  --accent-dark: #337ab7;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+  color: var(--primary-color);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--primary-color);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--link-hover-color);
+  }
+}
+
+// Components styling
+.card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.adm-tab-bar {
+  backdrop-filter: blur(10px);
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+// Responsive Grid
+.grid-container {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Text styles
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-tertiary {
+  color: var(--tertiary-color);
+}
+
+// Button styles
+.button {
+  background: var(--accent-dark);
+  color: var(--bg-primary);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: var(--primary-color);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #fff;
+    --bg-primary: #333;
+    --link-color: #337ab7;
+    --link-hover-color: #23527c;
+    --border-color: #555;
+    --secondary-color: #999;
+    --tertiary-color: #ccc;
+    --accent-dark: #337ab7;
+  }
+}

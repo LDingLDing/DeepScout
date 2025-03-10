@@ -1,0 +1,92 @@
+.container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  
+  @media (prefers-color-scheme: dark) {
+    background: var(--dark-background-color);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    color: var(--primary-color);
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    @media (prefers-color-scheme: dark) {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .label {
+    width: 80px;
+    color: var(--secondary-color);
+    font-size: 14px;
+  }
+
+  .value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    
+    span {
+      color: var(--primary-color);
+      font-size: 16px;
+    }
+  }
+}
+
+.settings {
+  :global {
+    .adm-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  
+  :global {
+    .adm-radio {
+      --icon-size: 20px;
+      --font-size: 16px;
+      --gap: 8px;
+    }
+  }
+}
+
+.logoutButton {
+  margin-top: 8px;
+}

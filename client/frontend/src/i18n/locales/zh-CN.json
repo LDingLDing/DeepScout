@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "explore": "探索",
+    "subscriptions": "订阅",
+    "profile": "个人"
+  },
+  "profile": {
+    "language": "语言",
+    "zh-CN": "中文",
+    "en-US": "English",
+    "theme": "主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "explore": {
+    "searchPlaceholder": "搜索话题",
+    "subscribe": "订阅",
+    "subscribed": "已订阅",
+    "subscribers": "位订阅者"
+  },
+  "subscriptions": {
+    "selectAll": "选中全部",
+    "cancelAll": "取消全部",
+    "readTime": "{{time}}阅读"
+  },
+  "article": {
+    "expand": "展开全文",
+    "collapse": "收起"
+  }
+}

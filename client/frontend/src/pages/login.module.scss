@@ -1,0 +1,33 @@
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-family: Charter, serif;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 400px;
+
+  :global(.adm-form) {
+    width: 100%;
+  }
+
+  :global(.adm-input) {
+    background-color: transparent;
+  }
+
+  :global(.adm-button-primary) {
+    background-color: var(--primary-color);
+  }
+}

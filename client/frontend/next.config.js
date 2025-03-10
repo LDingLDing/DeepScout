@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',
+  transpilePackages: ['antd-mobile'],
   async rewrites() {
     return [
       {

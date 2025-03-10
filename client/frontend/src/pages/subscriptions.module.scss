@@ -1,0 +1,115 @@
+.container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tabs {
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  :global {
+    .adm-capsule-tabs-tab {
+      min-width: 60px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.topicsContainer {
+  position: relative;
+  margin: -16px -16px 0;
+  padding: 16px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    background: linear-gradient(to right, transparent, var(--bg-primary));
+    pointer-events: none;
+  }
+}
+
+.topicsGrid {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  scrollbar-width: none;
+}
+
+.topicButton {
+  --background-color: var(--bg-secondary);
+  --border-color: var(--border-color);
+  --text-color: var(--secondary-color);
+  padding: 4px 12px;
+  font-size: 14px;
+  border-radius: 16px;
+  white-space: nowrap;
+  
+  &.selected {
+    --background-color: var(--primary-color);
+    --text-color: var(--bg-primary);
+    --border-color: var(--primary-color);
+  }
+}
+
+.card {
+  margin-bottom: 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.time {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--primary-color);
+}
+
+.content {
+  color: var(--secondary-color);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+}

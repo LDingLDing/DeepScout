@@ -1,0 +1,50 @@
+@import 'antd-mobile/bundle/style.css';
+
+:root {
+  --adm-color-primary: var(--primary-color);
+  --adm-color-success: #52c41a;
+  --adm-color-warning: #faad14;
+  --adm-color-danger: #ff4d4f;
+  
+  // Background colors
+  --adm-color-background: var(--bg-primary);
+  --adm-color-box: var(--bg-secondary);
+  
+  // Text colors
+  --adm-color-text: var(--primary-color);
+  --adm-color-text-secondary: var(--secondary-color);
+  --adm-color-weak: var(--tertiary-color);
+  
+  // Border colors
+  --adm-border-color: var(--border-color);
+  
+  // Component specific
+  --adm-font-size-main: 15px;
+  --adm-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  
+  // Border radius
+  --adm-radius-s: 4px;
+  --adm-radius-m: 8px;
+  --adm-radius-l: 12px;
+}
+
+// Tab Bar specific styles
+.adm-tab-bar {
+  --adm-tab-bar-background-color: var(--bg-primary);
+  --adm-tab-bar-item-active-color: var(--primary-color);
+  --adm-tab-bar-item-color: var(--secondary-color);
+}
+
+// Button styles
+.adm-button {
+  &.adm-button-default {
+    --adm-button-background-color: var(--bg-primary);
+    --adm-button-border-color: var(--border-color);
+    --adm-button-text-color: var(--primary-color);
+  }
+  
+  &.adm-button-primary {
+    --adm-button-background-color: var(--accent-dark);
+    --adm-button-text-color: var(--bg-primary);
+  }
+}

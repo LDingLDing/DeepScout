@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "explore": "Explore",
+    "subscriptions": "Subscriptions",
+    "profile": "Profile"
+  },
+  "profile": {
+    "language": "Language",
+    "zh-CN": "中文",
+    "en-US": "English",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "explore": {
+    "searchPlaceholder": "Search topics",
+    "subscribe": "Subscribe",
+    "subscribed": "Subscribed",
+    "subscribers": "subscribers"
+  },
+  "subscriptions": {
+    "selectAll": "Select All",
+    "cancelAll": "Cancel All",
+    "readTime": "{{time}} read"
+  },
+  "article": {
+    "expand": "Read more",
+    "collapse": "Show less"
+  }
+}

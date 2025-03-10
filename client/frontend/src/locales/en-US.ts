@@ -1,0 +1,47 @@
+export default {
+  common: {
+    search: 'Search',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    loading: 'Loading...',
+    copySuccess: 'Copied successfully',
+    logout: 'Logout',
+    logoutConfirm: 'Are you sure you want to logout?',
+    logoutSuccess: 'Logged out successfully',
+  },
+  nav: {
+    square: 'Square',
+    subscriptions: 'Subscriptions',
+    profile: 'Profile',
+  },
+  auth: {
+    login: 'Login',
+    email: 'Email',
+    emailPlaceholder: 'Please enter your email',
+    code: 'Verification Code',
+    codePlaceholder: 'Please enter verification code',
+    getCode: 'Get Code',
+    retryAfter: 's',
+    loginSuccess: 'Login successful',
+    loginFailed: 'Login failed, please try again',
+    invalidEmail: 'Please enter a valid email address',
+  },
+  topic: {
+    search: 'Search topics',
+    subscribers: 'subscribers',
+    hot: 'Hot',
+    subscribeSuccess: 'Subscribed successfully',
+    unsubscribeSuccess: 'Unsubscribed successfully',
+  },
+  article: {
+    expand: 'Read more',
+    collapse: 'Show less',
+    likes: 'likes',
+    comments: 'comments',
+  },
+  profile: {
+    title: 'Personal Info',
+    email: 'Email',
+    copy: 'Copy',
+  },
+};
