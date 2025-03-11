@@ -48,6 +48,21 @@ export const subscriptionsApi = {
   },
 };
 
+// 用户相关接口
+export const userApi = {
+  // 获取用户信息
+  getUserProfile: async () => {
+    const response = await api.get('/user/profile');
+    return response.data;
+  },
+  
+  // 更新用户配置
+  updateUserProfile: async (data: {enable_email_push?: boolean}) => {
+    const response = await api.put('/user/profile', data);
+    return response.data;
+  },
+};
+
 // 认证相关接口
 export const authApi = {
   // 发送验证码
@@ -61,6 +76,26 @@ export const authApi = {
     const response = await api.post('/auth/login', { email, code });
     return response.data;
   },
+  
+  // 登出
+  logout: async () => {
+    const response = await api.post('/auth/logout');
+    return response.data;
+  },
 };
+
+// 请求拦截器 - 添加认证令牌
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;

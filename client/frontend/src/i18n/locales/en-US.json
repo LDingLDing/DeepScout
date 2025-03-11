@@ -18,7 +18,12 @@
     "emailCopied": "Email copied",
     "logout": "Logout",
     "logoutConfirm": "Are you sure you want to logout?",
-    "logoutSuccess": "Logged out successfully"
+    "logoutSuccess": "Logged out successfully",
+    "enableEmailPush": "Email Notifications",
+    "updateSuccess": "Updated successfully",
+    "updateFailed": "Update failed",
+    "fetchFailed": "Failed to fetch information",
+    "logoutFailed": "Logout failed"
   },
   "explore": {
     "searchPlaceholder": "Search topics",

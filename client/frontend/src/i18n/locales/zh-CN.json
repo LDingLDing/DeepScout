@@ -18,7 +18,12 @@
     "emailCopied": "邮箱已复制",
     "logout": "退出登录",
     "logoutConfirm": "确定要退出登录吗？",
-    "logoutSuccess": "已退出登录"
+    "logoutSuccess": "已退出登录",
+    "enableEmailPush": "邮件推送",
+    "updateSuccess": "更新成功",
+    "updateFailed": "更新失败",
+    "fetchFailed": "获取信息失败",
+    "logoutFailed": "退出失败"
   },
   "explore": {
     "searchPlaceholder": "搜索话题",
