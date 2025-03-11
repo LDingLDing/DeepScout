@@ -56,7 +56,7 @@ const ProfilePage = () => {
         try {
           await authApi.logout();
           // 清除本地存储的token
-          localStorage.removeItem('token');
+          localStorage.removeItem('access_token');
           Toast.show({
             icon: 'success',
             content: t('profile.logoutSuccess'),

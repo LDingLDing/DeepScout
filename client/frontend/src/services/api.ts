@@ -79,6 +79,15 @@ export const authApi = {
   
   // 登出
   logout: async () => {
+    // 从localStorage获取token
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      // 如果没有token，直接返回成功
+      return { success: true };
+    }
+    
+    // 设置请求头中的Authorization
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const response = await api.post('/auth/logout');
     return response.data;
   },
@@ -87,13 +96,31 @@ export const authApi = {
 // 请求拦截器 - 添加认证令牌
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 响应拦截器 - 处理认证错误
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // 清除本地存储的token
+      localStorage.removeItem('access_token');
+      // 如果不在登录页，则重定向到登录页
+      if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
     return Promise.reject(error);
   }
 );
