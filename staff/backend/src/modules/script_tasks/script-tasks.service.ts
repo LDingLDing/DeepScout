@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { ScriptFile } from './entities/script-file.entity';
-import { ScriptTask, ScriptTaskStatus } from './entities/script-task.entity';
-import { ScriptTaskLog, ScriptTaskLogStatus } from './entities/script-task-log.entity';
+import { ScriptFile } from '@entities';
+import { ScriptTask, ScriptTaskStatus } from '@entities';
+import { ScriptTaskLog, ScriptTaskLogStatus } from '@entities';
 import { CreateScriptFileDto } from './dto/create-script-file.dto';
 import { CreateScriptTaskDto } from './dto/create-script-task.dto';
 import { CreateScriptTaskLogDto } from './dto/create-script-task-log.dto';

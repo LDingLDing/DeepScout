@@ -28,8 +28,7 @@
   "explore": {
     "searchPlaceholder": "搜索话题",
     "subscribe": "订阅",
-    "subscribed": "已订阅",
-    "subscribers": "位订阅者"
+    "subscribed": "已订阅"
   },
   "subscriptions": {
     "all": "全部",

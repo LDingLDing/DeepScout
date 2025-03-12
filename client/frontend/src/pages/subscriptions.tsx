@@ -11,7 +11,6 @@ interface Topic {
   title: string;
   description: string;
   imageUrl?: string;
-  subscribers: number;
   hot: boolean;
   isSubscribed: boolean;
 }

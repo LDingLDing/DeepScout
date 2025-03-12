@@ -10,7 +10,6 @@ interface TopicCardProps {
   title: string;
   description: string;
   imageUrl?: string;
-  subscribers: number;
   hot?: boolean;
   isSubscribed: boolean;
   onSubscribe: (id: string) => void;
@@ -21,7 +20,6 @@ const TopicCard: React.FC<TopicCardProps> = ({
   title,
   description,
   imageUrl,
-  subscribers,
   hot,
   isSubscribed,
   onSubscribe,
@@ -44,7 +42,6 @@ const TopicCard: React.FC<TopicCardProps> = ({
         </div>
         <p className={styles.description}>{description}</p>
         <div className={styles.footer}>
-          <span>{formatNumber(subscribers)} {t('explore.subscribers')}</span>
           <Button
             className={styles.subscribeBtn}
             onClick={() => onSubscribe(id)}

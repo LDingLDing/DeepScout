@@ -14,9 +14,6 @@ export class Topic {
   @Column({ nullable: true })
   image_url: string;
 
-  @Column({ default: 0 })
-  subscribers: number;
-
   @Column({ default: false })
   hot: boolean;
 

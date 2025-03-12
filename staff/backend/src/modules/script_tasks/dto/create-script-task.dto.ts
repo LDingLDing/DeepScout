@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { ScriptTaskStatus } from '../entities/script-task.entity';
+import { ScriptTaskStatus } from '@entities';
 
 export class CreateScriptTaskDto {
   @IsNotEmpty({ message: '脚本ID不能为空' })

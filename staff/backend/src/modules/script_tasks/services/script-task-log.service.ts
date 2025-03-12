@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ScriptTaskLog } from '../entities/script-task-log.entity';
+import { ScriptTaskLog } from '@entities';
 import { CreateScriptTaskLogDto } from '../dto/create-script-task-log.dto';
 import { ScriptTaskService } from './script-task.service';
 

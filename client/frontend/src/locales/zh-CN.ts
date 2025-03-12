@@ -28,7 +28,6 @@ export default {
   },
   topic: {
     search: '搜索话题',
-    subscribers: '人订阅',
     hot: '热门',
     subscribeSuccess: '订阅成功',
     unsubscribeSuccess: '取消订阅成功',

@@ -4,8 +4,8 @@ import { CreateScriptTaskDto } from '../dto/create-script-task.dto';
 import { JwtAuthGuard } from '../../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../../guards/roles.guard';
 import { Roles } from '../../../decorators/roles.decorator';
-import { StaffRole } from '../../../entities/staff_user/staff-user.entity';
-import { ScriptTaskStatus } from '../entities/script-task.entity';
+import { StaffRole } from '@entities/staff_user/staff-user.entity';
+import { ScriptTaskStatus } from '@entities';
 
 @Controller('script-tasks')
 @UseGuards(JwtAuthGuard, RolesGuard)

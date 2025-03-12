@@ -1,5 +1,5 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { ScriptFile } from './entities/script-file.entity';
+import { ScriptFile } from '@entities';
 
 @Resolver(() => ScriptFile)
 export class ScriptTasksResolver {

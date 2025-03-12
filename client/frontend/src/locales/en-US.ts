@@ -28,7 +28,6 @@ export default {
   },
   topic: {
     search: 'Search topics',
-    subscribers: 'subscribers',
     hot: 'Hot',
     subscribeSuccess: 'Subscribed successfully',
     unsubscribeSuccess: 'Unsubscribed successfully',

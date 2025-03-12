@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ScriptTask, ScriptTaskStatus } from '../entities/script-task.entity';
+import { ScriptTask, ScriptTaskStatus } from '@entities';
 import { CreateScriptTaskDto } from '../dto/create-script-task.dto';
 import { ScriptFileService } from './script-file.service';
 

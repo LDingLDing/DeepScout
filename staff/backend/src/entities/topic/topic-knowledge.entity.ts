@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Topic } from './topic.entity';
-import { ScriptTask } from '../../script_tasks/entities/script-task.entity';
+import { ScriptTask } from '@entities';
 
 @Entity('topic_knowledge')
 export class TopicKnowledge {

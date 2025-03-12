@@ -28,8 +28,7 @@
   "explore": {
     "searchPlaceholder": "Search topics",
     "subscribe": "Subscribe",
-    "subscribed": "Subscribed",
-    "subscribers": "subscribers"
+    "subscribed": "Subscribed"
   },
   "subscriptions": {
     "all": "All",

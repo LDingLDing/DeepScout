@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ScriptFile } from '../entities/script-file.entity';
+import { ScriptFile } from '@entities';
 import { CreateScriptFileDto } from '../dto/create-script-file.dto';
 
 @Injectable()

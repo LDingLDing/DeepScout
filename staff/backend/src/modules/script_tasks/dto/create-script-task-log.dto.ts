@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { ScriptTaskLogStatus } from '../entities/script-task-log.entity';
+import { ScriptTaskLogStatus } from '@entities';
 
 export class CreateScriptTaskLogDto {
   @IsNotEmpty({ message: '任务ID不能为空' })
