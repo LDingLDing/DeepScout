@@ -61,6 +61,7 @@ a {
   backdrop-filter: blur(10px);
   background-color: var(--bg-primary);
   border-top: 1px solid var(--border-color);
+  z-index: 10000;
 }
 
 // Responsive Grid
