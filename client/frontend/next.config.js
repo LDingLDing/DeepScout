@@ -4,6 +4,15 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   transpilePackages: ['antd-mobile'],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/explore',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
