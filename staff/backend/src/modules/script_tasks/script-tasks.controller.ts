@@ -5,7 +5,7 @@ import { CreateScriptTaskDto } from './dto/create-script-task.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { StaffRole } from '../staff/entities/staff-user.entity';
+import { StaffRole } from '../../entities/staff_user/staff-user.entity';
 import { ScriptTaskStatus } from './entities/script-task.entity';
 import { ScriptTaskLogStatus } from './entities/script-task-log.entity';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';

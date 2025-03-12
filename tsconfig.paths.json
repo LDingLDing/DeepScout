@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@entities/*": ["staff/backend/src/entities/*"],
+      "@entities": ["staff/backend/src/entities"]
+    }
+  }
+} 

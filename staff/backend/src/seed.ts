@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { StaffService } from './modules/staff/staff.service';
-import { StaffRole } from './modules/staff/entities/staff-user.entity';
+import { StaffRole } from './entities/staff_user/staff-user.entity';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {

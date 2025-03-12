@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { StaffUser } from './entities/staff-user.entity';
+import { StaffUser } from '../../entities/staff_user/staff-user.entity';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { LoginStaffDto } from './dto/login-staff.dto';

@@ -4,7 +4,7 @@ import { CreateScriptFileDto } from '../dto/create-script-file.dto';
 import { JwtAuthGuard } from '../../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../../guards/roles.guard';
 import { Roles } from '../../../decorators/roles.decorator';
-import { StaffRole } from '../../staff/entities/staff-user.entity';
+import { StaffRole } from '../../../entities/staff_user/staff-user.entity';
 
 @Controller('script-files')
 @UseGuards(JwtAuthGuard, RolesGuard)

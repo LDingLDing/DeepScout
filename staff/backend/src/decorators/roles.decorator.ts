@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import { StaffRole } from '../modules/staff/entities/staff-user.entity';
+import { StaffRole } from '../entities/staff_user/staff-user.entity';
 
 export const Roles = (...roles: StaffRole[]) => SetMetadata('roles', roles);

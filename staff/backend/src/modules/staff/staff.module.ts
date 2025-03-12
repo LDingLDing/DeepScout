@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StaffController } from './staff.controller';
 import { StaffService } from './staff.service';
-import { StaffUser } from './entities/staff-user.entity';
+import { StaffUser } from '../../entities/staff_user/staff-user.entity';
 import { JwtService } from '../../services/jwt.service';
 
 @Module({

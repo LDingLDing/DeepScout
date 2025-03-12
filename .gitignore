@@ -39,3 +39,6 @@ Thumbs.db
 # 临时文件
 tsconfig.tsbuildinfo
 todo.md
+
+# 测试文件
+.cursor/
