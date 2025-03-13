@@ -1,36 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@entities';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '@entities/user/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-  // 模拟用户数据存储
-  private readonly users: Map<string, User> = new Map();
-
-  constructor() {
-    // 初始化一些模拟数据
-    this.users.set('1', {
-      id: '1',
-      email: 'test@example.com',
-      enable_email_push: false,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
-  }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
+  ) {}
 
   // 根据ID获取用户信息
   async findById(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    return this.userRepository.findOne({ where: { id } });
   }
   
   // 根据邮箱获取用户信息
   async findByEmail(email: string): Promise<User | undefined> {
-    for (const user of this.users.values()) {
-      if (user.email === email) {
-        return user;
-      }
-    }
-    return undefined;
+    return this.userRepository.findOne({ where: { email } });
   }
   
   // 根据邮箱查找或创建用户
@@ -42,33 +30,35 @@ export class UserService {
     }
     
     // 不存在则创建新用户
-    const id = (this.users.size + 1).toString();
-    const newUser: User = {
-      id,
+    const newUser = this.userRepository.create({
       email,
-      enable_email_push: false,
-      created_at: new Date(),
-      updated_at: new Date(),
-    };
+      enable_email_push: false
+    });
     
-    this.users.set(id, newUser);
-    return newUser;
+    // 保存到数据库，TypeORM 会自动生成 UUID
+    return await this.userRepository.save(newUser);
   }
 
   // 更新用户信息
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = this.users.get(id);
+    const user = await this.findById(id);
     if (!user) {
       throw new Error('用户不存在');
     }
 
-    const updatedUser = {
-      ...user,
-      ...updateUserDto,
-      updated_at: new Date(),
-    };
+    // 更新用户信息
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
+  }
 
-    this.users.set(id, updatedUser);
-    return updatedUser;
+  async createUser(email: string): Promise<User> {
+    // 不存在则创建新用户
+    const newUser = this.userRepository.create({
+      email,
+      enable_email_push: false
+    });
+    
+    // 保存到数据库，TypeORM 会自动生成 UUID
+    return await this.userRepository.save(newUser);
   }
 }

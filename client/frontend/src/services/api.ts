@@ -13,7 +13,6 @@ const api = axios.create({
 export const topicsApi = {
   // 获取所有话题
   getTopics: async () => {
-    console.log("获取话题列表");
     const response = await api.get('/topics');
     return response.data;
   },
