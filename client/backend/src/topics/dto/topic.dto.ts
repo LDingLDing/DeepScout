@@ -2,7 +2,7 @@ export class TopicDto {
   id: string;
   title: string;
   description: string;
-  imageUrl?: string;
+  image_url: string;
   hot: boolean;
-  isSubscribed: boolean;
+  is_subscribed: boolean;
 }

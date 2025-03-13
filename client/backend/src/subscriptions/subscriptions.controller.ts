@@ -1,8 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards, Req } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { SubscriptionDto } from './dto/subscription.dto';
 import { PaginatedSubscriptionsDto } from './dto/paginated-result.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Request } from 'express';
 
 @ApiTags('subscriptions')
 @Controller('subscriptions')
@@ -10,19 +12,31 @@ export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}
 
   @Get()
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  findAll(@Query('page') page = 1, @Query('limit') limit = 10): PaginatedSubscriptionsDto {
-    return this.subscriptionsService.findAll(+page, +limit);
+  @UseGuards(JwtAuthGuard)
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'topics', required: false, isArray: true })
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('topics') topics: string[] = [],
+    @Req() req: Request
+  ): Promise<PaginatedSubscriptionsDto> {
+    const userId = req.user['id'];
+    return this.subscriptionsService.findAll(page, limit, topics, userId);
   }
 
   @Get('topic/:topicId')
-  findByTopicId(@Param('topicId') topicId: string): SubscriptionDto[] {
-    return this.subscriptionsService.findByTopicId(topicId);
+  async findByTopicId(
+    @Param('topicId') topic_id: string
+  ): Promise<SubscriptionDto[]> {
+    return this.subscriptionsService.findByTopicId(topic_id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): SubscriptionDto | undefined {
+  async findOne(
+    @Param('id') id: string
+  ): Promise<SubscriptionDto | undefined> {
     return this.subscriptionsService.findOne(id);
   }
 }

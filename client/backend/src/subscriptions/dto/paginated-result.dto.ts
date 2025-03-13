@@ -1,13 +1,9 @@
 import { SubscriptionDto } from './subscription.dto';
 
-export class PaginatedResultDto<T> {
-  items: T[];
+export class PaginatedSubscriptionsDto {
+  items: SubscriptionDto[];
   total: number;
   page: number;
   limit: number;
   hasMore: boolean;
-}
-
-export class PaginatedSubscriptionsDto extends PaginatedResultDto<SubscriptionDto> {
-  items: SubscriptionDto[];
 }

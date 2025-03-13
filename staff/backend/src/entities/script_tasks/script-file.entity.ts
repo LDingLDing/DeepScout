@@ -10,7 +10,7 @@ export class ScriptFile {
 
   @Field()
   @Column({ name: 'file_name' })
-  fileName: string;
+  file_name: string;
 
   @Field()
   @Column({ type: 'text' })
@@ -18,5 +18,5 @@ export class ScriptFile {
 
   @Field()
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 }

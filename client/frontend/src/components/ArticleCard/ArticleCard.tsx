@@ -4,24 +4,33 @@ import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
 import styles from './ArticleCard.module.scss';
 
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  image_url?: string;
+  hot: boolean;
+  is_subscribed: boolean;
+}
+
 interface ArticleCardProps {
   id: string;
-  topicId: string;
+  topic_id: string;
   title: string;
   content: string;
-  publishTime: number;
-  readTime: number;
-  topic: {
-    title: string;
-  };
+  publish_time: number;
+  read_time: number;
+  topic: Topic;
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({
+  id,
+  topic_id,
   title,
   content,
-  publishTime,
-  readTime,
-  topic,
+  publish_time,
+  read_time,
+  topic
 }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
@@ -29,7 +38,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   
   // 将毫秒时间戳转换为本地日期
-  const formattedDate = new Date(publishTime).toLocaleDateString();
+  const formattedDate = new Date(publish_time).toLocaleDateString();
   
   // 将秒数转换为可读的时间格式
   const formatReadTime = (seconds: number): string => {
@@ -83,7 +92,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         )}
       </div>
       <div className={styles.footer}>
-        <span className={styles.readTime}>{formatReadTime(readTime)}</span>
+        <span className={styles.readTime}>{formatReadTime(read_time)}</span>
       </div>
     </Card>
   );

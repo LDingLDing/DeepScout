@@ -1,3 +1,16 @@
+/**
+ * ScriptTask Entity - 脚本任务实体
+ * 
+ * 用途：
+ * - 记录系统执行的脚本任务
+ * - 追踪任务执行状态和结果
+ * - 关联任务产生的内容
+ * 
+ * 关联关系：
+ * - 一对多：ScriptTask -> TopicKnowledge (一个任务可以生成多个知识条目)
+ * 
+ */
+
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { ScriptFile } from './script-file.entity';
 
@@ -15,7 +28,7 @@ export class ScriptTask {
   id: number;
 
   @Column({ name: 'script_id' })
-  scriptId: number;
+  script_id: number;
 
   @Column({
     type: 'enum',
@@ -25,10 +38,10 @@ export class ScriptTask {
   status: ScriptTaskStatus;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updated_at: Date;
 
   @ManyToOne(() => ScriptFile)
   @JoinColumn({ name: 'script_id' })

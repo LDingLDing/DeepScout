@@ -18,6 +18,12 @@ export const topicsApi = {
     return response.data;
   },
   
+  // 获取用户订阅的话题
+  getUserSubscribedTopics: async () => {
+    const response = await api.get('/topics/subscribed');
+    return response.data;
+  },
+  
   // 订阅/取消订阅话题
   toggleSubscription: async (id: string) => {
     const response = await api.post(`/topics/${id}/subscribe`);
@@ -27,23 +33,12 @@ export const topicsApi = {
 
 // 订阅内容相关接口
 export const subscriptionsApi = {
-  // 获取所有订阅内容
-  getSubscriptions: async () => {
-    const response = await api.get('/subscriptions');
-    return response.data;
-  },
-  
-  // 获取分页订阅内容
-  getPaginatedSubscriptions: async (page: number = 1, limit: number = 10) => {
+
+  // 获取订阅内容
+  getSubscriptions: async (page: number = 1, limit: number = 10, topics: string[] = []) => {
     const response = await api.get('/subscriptions', {
-      params: { page, limit }
+      params: { page, limit, topics }
     });
-    return response.data;
-  },
-  
-  // 获取特定话题的订阅内容
-  getSubscriptionsByTopic: async (topicId: string) => {
-    const response = await api.get(`/subscriptions/topic/${topicId}`);
     return response.data;
   },
 };

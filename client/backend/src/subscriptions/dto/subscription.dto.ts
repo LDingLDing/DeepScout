@@ -1,8 +1,8 @@
 export class SubscriptionDto {
   id: string;
-  topicId: string;
+  topic_id: string;
   title: string;
   content: string;
-  publishTime: number;
-  readTime: number;
+  publish_time: number;
+  read_time: number;
 }

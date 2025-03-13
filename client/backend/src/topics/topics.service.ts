@@ -1,57 +1,73 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Topic } from '@entities/topic/topic.entity';
+import { SubscripTopic } from '@entities/topic/subscrip-topic.entity';
 import { TopicDto } from './dto/topic.dto';
 
 @Injectable()
 export class TopicsService {
-  private topics: TopicDto[] = [
-    {
-      id: '1',
-      title: '前端开发',
-      description: '关于Web前端开发的最新技术、框架和最佳实践',
-      imageUrl: 'https://picsum.photos/400/300?random=1',
-      hot: true,
-      isSubscribed: false,
-    },
-    {
-      id: '2',
-      title: '人工智能',
-      description: '探讨AI技术发展、机器学习算法和应用案例',
-      imageUrl: 'https://picsum.photos/400/300?random=2',
-      hot: true,
-      isSubscribed: true,
-    },
-    {
-      id: '3',
-      title: '云原生',
-      description: '关于容器化、微服务架构和云计算的技术讨论',
-      imageUrl: 'https://picsum.photos/400/300?random=3',
-      hot: false,
-      isSubscribed: false,
-    },
-    {
-      id: '4',
-      title: '区块链',
-      description: '探讨区块链技术、加密货币和去中心化应用',
-      imageUrl: 'https://picsum.photos/400/300?random=4',
-      hot: false,
-      isSubscribed: false,
-    },
-  ];
+  constructor(
+    @InjectRepository(Topic)
+    private readonly topicRepository: Repository<Topic>,
+    @InjectRepository(SubscripTopic)
+    private readonly subscripTopicRepository: Repository<SubscripTopic>
+  ) {}
 
-  findAll(): TopicDto[] {
-    return this.topics;
+  async findAll(): Promise<TopicDto[]> {
+    const topics = await this.topicRepository.find();
+    return topics.map(topic => this.toDto(topic));
   }
 
-  findOne(id: string): TopicDto | undefined {
-    return this.topics.find(topic => topic.id === id);
+  async findSubscribed(userId: string): Promise<TopicDto[]> {
+    const subscriptions = await this.subscripTopicRepository.find({
+      where: { user_id: userId },
+      relations: ['topic'],
+    });
+    
+    const subscribedTopics = subscriptions.map(sub => sub.topic);
+    return subscribedTopics.map(topic => this.toDto(topic, true));
   }
 
-  // 模拟订阅/取消订阅功能
-  toggleSubscription(id: string): TopicDto | undefined {
-    const topic = this.topics.find(topic => topic.id === id);
-    if (topic) {
-      topic.isSubscribed = !topic.isSubscribed;
+  async findOne(id: string): Promise<TopicDto | undefined> {
+    const topic = await this.topicRepository.findOne({ where: { id } });
+    return topic ? this.toDto(topic) : undefined;
+  }
+
+  async toggleSubscription(id: string, userId: string): Promise<TopicDto | undefined> {
+    const topic = await this.topicRepository.findOne({ where: { id } });
+    if (!topic) {
+      return undefined;
     }
-    return topic;
+
+    // 查找是否已存在订阅
+    const existingSubscription = await this.subscripTopicRepository.findOne({
+      where: { topic_id: id, user_id: userId }
+    });
+
+    if (existingSubscription) {
+      // 如果已订阅，则取消订阅
+      await this.subscripTopicRepository.remove(existingSubscription);
+      return this.toDto(topic, false);
+    } else {
+      // 如果未订阅，则添加订阅
+      const newSubscription = this.subscripTopicRepository.create({
+        topic_id: id,
+        user_id: userId
+      });
+      await this.subscripTopicRepository.save(newSubscription);
+      return this.toDto(topic, true);
+    }
+  }
+
+  private toDto(topic: Topic, is_subscribed: boolean = false): TopicDto {
+    return {
+      id: topic.id,
+      title: topic.title,
+      description: topic.description,
+      image_url: topic.image_url,
+      hot: topic.hot,
+      is_subscribed: is_subscribed,
+    };
   }
 }
