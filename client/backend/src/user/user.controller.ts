@@ -1,7 +1,8 @@
-import { Controller, Get, Put, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Body, UseGuards, Req, NotFoundException } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -9,32 +10,32 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Req() req) {
-    // Get user ID from JWT
-    const userId = req.user.sub;
-    // Mock data, should be retrieved from database in actual application
+  async getProfile(@Req() req: Request) {
+    // 从 JWT 中获取用户 ID
+    const userId = req.user['id'];
+    
+    // 从数据库获取用户信息
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new NotFoundException('用户不存在');
+    }
+
     return {
-      email: 'test@example.com',
-      enable_email_push: false
+      id: user.id,
+      email: user.email,
+      enable_email_push: user.enable_email_push,
+      created_at: user.created_at,
+      updated_at: user.updated_at
     };
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('profile')
-  async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
-    try {
-      // Get user ID from JWT
-      const userId = req.user.sub;
-      
-      // In actual application, this should call service layer to update database
-      // Now we just return mock data
-      return {
-        email: 'test@example.com',
-        enable_email_push: updateUserDto.enable_email_push !== undefined ? 
-          updateUserDto.enable_email_push : false
-      };
-    } catch (error) {
-      throw error;
-    }
+  async updateProfile(
+    @Req() req: Request,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
+    const userId = req.user['id'];
+    return this.userService.update(userId, updateUserDto);
   }
 }

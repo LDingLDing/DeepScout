@@ -32,7 +32,7 @@ export class UserService {
     // 不存在则创建新用户
     const newUser = this.userRepository.create({
       email,
-      enable_email_push: false
+      enable_email_push: true
     });
     
     // 保存到数据库，TypeORM 会自动生成 UUID
@@ -55,7 +55,7 @@ export class UserService {
     // 不存在则创建新用户
     const newUser = this.userRepository.create({
       email,
-      enable_email_push: false
+      enable_email_push: true
     });
     
     // 保存到数据库，TypeORM 会自动生成 UUID
