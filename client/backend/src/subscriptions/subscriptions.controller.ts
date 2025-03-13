@@ -27,16 +27,22 @@ export class SubscriptionsController {
   }
 
   @Get('topic/:topicId')
+  @UseGuards(JwtAuthGuard)
   async findByTopicId(
-    @Param('topicId') topic_id: string
+    @Param('topicId') topic_id: string,
+    @Req() req: Request
   ): Promise<SubscriptionDto[]> {
-    return this.subscriptionsService.findByTopicId(topic_id);
+    const userId = req.user['id'];
+    return this.subscriptionsService.findByTopicId(topic_id, userId);
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findOne(
-    @Param('id') id: string
+    @Param('id') id: string,
+    @Req() req: Request
   ): Promise<SubscriptionDto | undefined> {
-    return this.subscriptionsService.findOne(id);
+    const userId = req.user['id'];
+    return this.subscriptionsService.findOne(id, userId);
   }
 }

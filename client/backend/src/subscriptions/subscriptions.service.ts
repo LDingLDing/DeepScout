@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from '@entities/subscription/subscription.entity';
@@ -20,16 +20,30 @@ export class SubscriptionsService {
     topics: string[] = [],
     userId: string
   ): Promise<PaginatedSubscriptionsDto> {
-    // 如果没有指定话题，获取用户订阅的所有话题
-    if (topics.length === 0) {
-      const subscribedTopics = await this.topicsService.findSubscribed(userId);
-      topics = subscribedTopics.map(topic => topic.id);
+    // 获取用户订阅的所有话题
+    const subscribedTopics = await this.topicsService.findSubscribed(userId);
+    const subscribedTopicIds = subscribedTopics.map(topic => topic.id);
+
+    // 如果指定了话题，验证用户是否有权限访问这些话题
+    const validTopics = topics.length > 0
+      ? topics.filter(id => subscribedTopicIds.includes(id))
+      : subscribedTopicIds;
+
+    // 如果没有有效的话题，返回空结果
+    if (validTopics.length === 0) {
+      return {
+        items: [],
+        total: 0,
+        page,
+        limit,
+        hasMore: false
+      };
     }
 
     // 构建查询
     const query = this.subscriptionRepository
       .createQueryBuilder('subscription')
-      .where('subscription.topic_id IN (:...topics)', { topics })
+      .where('subscription.topic_id IN (:...validTopics)', { validTopics })
       .orderBy('subscription.publish_time', 'DESC')
       .skip((page - 1) * limit)
       .take(limit);
@@ -49,7 +63,15 @@ export class SubscriptionsService {
     };
   }
 
-  async findByTopicId(topic_id: string): Promise<SubscriptionDto[]> {
+  async findByTopicId(topic_id: string, userId: string): Promise<SubscriptionDto[]> {
+    // 验证用户是否订阅了该话题
+    const subscribedTopics = await this.topicsService.findSubscribed(userId);
+    const isSubscribed = subscribedTopics.some(topic => topic.id === topic_id);
+    
+    if (!isSubscribed) {
+      throw new ForbiddenException('You do not have access to this topic');
+    }
+
     const subscriptions = await this.subscriptionRepository.find({
       where: { topic_id },
       order: {
@@ -60,12 +82,24 @@ export class SubscriptionsService {
     return subscriptions.map(sub => this.toDto(sub));
   }
 
-  async findOne(id: string): Promise<SubscriptionDto | undefined> {
+  async findOne(id: string, userId: string): Promise<SubscriptionDto | undefined> {
     const subscription = await this.subscriptionRepository.findOne({
       where: { id }
     });
     
-    return subscription ? this.toDto(subscription) : undefined;
+    if (!subscription) {
+      return undefined;
+    }
+
+    // 验证用户是否订阅了该内容所属的话题
+    const subscribedTopics = await this.topicsService.findSubscribed(userId);
+    const isSubscribed = subscribedTopics.some(topic => topic.id === subscription.topic_id);
+    
+    if (!isSubscribed) {
+      throw new ForbiddenException('You do not have access to this subscription');
+    }
+
+    return this.toDto(subscription);
   }
 
   private toDto(subscription: Subscription): SubscriptionDto {
