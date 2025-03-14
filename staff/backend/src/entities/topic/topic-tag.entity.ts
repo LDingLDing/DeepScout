@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('topic_tag')
 export class TopicTag {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   name: string;

@@ -32,7 +32,7 @@ export class ScriptTaskService {
     });
   }
 
-  async findOne(id: number): Promise<ScriptTask> {
+  async findOne(id: string): Promise<ScriptTask> {
     const scriptTask = await this.scriptTaskRepository.findOne({
       where: { id },
       relations: ['script']
@@ -45,17 +45,17 @@ export class ScriptTaskService {
     return scriptTask;
   }
 
-  async updateStatus(id: number, status: ScriptTaskStatus): Promise<ScriptTask> {
+  async updateStatus(id: string, status: ScriptTaskStatus): Promise<ScriptTask> {
     const scriptTask = await this.findOne(id);
     scriptTask.status = status;
     return this.scriptTaskRepository.save(scriptTask);
   }
 
-  async update(id: number, task: Partial<ScriptTask>) {
+  async update(id: string, task: Partial<ScriptTask>) {
     return this.scriptTaskRepository.update(id, task);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return this.scriptTaskRepository.delete(id);
   }
 }

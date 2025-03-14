@@ -1,10 +1,10 @@
 import axiosInstance from '../utils/axios-config';
-import { StaffRole } from '../modules/staff/entities/staff-user.entity';
+import { StaffRole } from '@entities/staff_user/staff-user.entity';
 
 
 // Staff接口类型
 export interface Staff {
-  id: number;
+  id: string;
   username: string;
   email?: string;
   role: StaffRole;
@@ -38,7 +38,7 @@ export const getAllStaff = async (): Promise<Staff[]> => {
 };
 
 // 获取特定管理员
-export const getStaffById = async (id: number): Promise<Staff> => {
+export const getStaffById = async (id: string): Promise<Staff> => {
   const response = await axiosInstance.get(`/staff/${id}`);
   return response.data;
 };
@@ -56,7 +56,7 @@ export const createStaff = async (staffData: {
 
 // 更新管理员
 export const updateStaff = async (
-  id: number,
+  id: string,
   staffData: Partial<{
     email?: string;
     role?: StaffRole;
@@ -69,7 +69,7 @@ export const updateStaff = async (
 };
 
 // 重置密码
-export const resetPassword = async (id: number, password: string): Promise<{ message: string }> => {
+export const resetPassword = async (id: string, password: string): Promise<{ message: string }> => {
   if (!id || typeof id !== 'number') {
     throw new Error('Invalid staff ID');
   }

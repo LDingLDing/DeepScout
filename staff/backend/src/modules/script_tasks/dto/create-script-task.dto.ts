@@ -1,10 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ScriptTaskStatus } from '@entities';
 
 export class CreateScriptTaskDto {
   @IsNotEmpty({ message: '脚本ID不能为空' })
-  @IsNumber({}, { message: '脚本ID必须是数字' })
-  scriptId: number;
+  @IsString({ message: '脚本ID必须是字符串' })
+  scriptId: string;
 
   @IsOptional()
   @IsEnum(ScriptTaskStatus, { message: '无效的任务状态' })

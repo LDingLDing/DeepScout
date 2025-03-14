@@ -6,8 +6,8 @@ export type LogStatus = 'success' | 'failed' | 'running';
 
 // 任务接口类型
 export interface Task {
-  taskid: number;
-  sourceid: number;
+  taskid: string;
+  sourceid: string;
   source_type: string;
   code: string;
   version: number;
@@ -19,8 +19,8 @@ export interface Task {
 
 // 任务日志接口类型
 export interface TaskLog {
-  logid: number;
-  taskid: number;
+  logid: string;
+  taskid: string;
   status: LogStatus;
   execution_time: string;
   duration_ms?: number;
@@ -54,13 +54,13 @@ export const getLogs = async (params: GetLogsParams): Promise<LogsResponse> => {
 };
 
 // 获取日志详情
-export const getLogDetail = async (logId: number): Promise<TaskLog> => {
+export const getLogDetail = async (logId: string): Promise<TaskLog> => {
   const response = await axios.get(`${API_BASE_URL}/task-logs/${logId}`);
   return response.data;
 };
 
 // 获取特定任务的日志
-export const getLogsByTaskId = async (taskId: number): Promise<TaskLog[]> => {
+export const getLogsByTaskId = async (taskId: string): Promise<TaskLog[]> => {
   const response = await axios.get(`${API_BASE_URL}/task-logs/task/${taskId}`);
   return response.data;
 };

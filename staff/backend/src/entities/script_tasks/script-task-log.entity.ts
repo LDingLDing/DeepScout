@@ -9,11 +9,11 @@ export enum ScriptTaskLogStatus {
 
 @Entity('script_task_log')
 export class ScriptTaskLog {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'task_id' })
-  taskId: number;
+  taskId: string;
 
   @Column({ type: 'text' })
   content: string;

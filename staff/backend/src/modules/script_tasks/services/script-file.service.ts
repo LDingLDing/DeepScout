@@ -22,7 +22,7 @@ export class ScriptFileService {
     });
   }
 
-  async findOne(id: number): Promise<ScriptFile> {
+  async findOne(id: string): Promise<ScriptFile> {
     const scriptFile = await this.scriptFileRepository.findOne({ where: { id } });
     if (!scriptFile) {
       throw new NotFoundException(`脚本文件 ID ${id} 不存在`);
@@ -37,11 +37,11 @@ export class ScriptFileService {
     });
   }
 
-  async update(id: number, file: Partial<ScriptFile>) {
+  async update(id: string, file: Partial<ScriptFile>) {
     return this.scriptFileRepository.update(id, file);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return this.scriptFileRepository.delete(id);
   }
 }

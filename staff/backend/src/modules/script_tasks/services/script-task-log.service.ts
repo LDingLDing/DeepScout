@@ -21,7 +21,7 @@ export class ScriptTaskLogService {
     return this.scriptTaskLogRepository.save(scriptTaskLog);
   }
 
-  async findByTaskId(taskId: number): Promise<ScriptTaskLog[]> {
+  async findByTaskId(taskId: string): Promise<ScriptTaskLog[]> {
     return this.scriptTaskLogRepository.find({
       where: { taskId },
       order: { createdAt: 'DESC' }

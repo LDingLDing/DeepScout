@@ -7,7 +7,7 @@ export type UserRole = 'admin' | 'editor' | 'viewer';
 
 // 用户信息类型
 export interface User {
-  id: number;
+  id: string;
   username: string;
   role: UserRole;
   email?: string;

@@ -21,7 +21,7 @@ export class ScriptTasksService {
   ) {}
 
   // 脚本文件相关方法
-  async createScriptFile(createScriptFileDto: CreateScriptFileDto, staffId: number): Promise<ScriptFile> {
+  async createScriptFile(createScriptFileDto: CreateScriptFileDto, staffId: string): Promise<ScriptFile> {
     const scriptFile = this.scriptFileRepository.create({
       ...createScriptFileDto,
     });
@@ -61,7 +61,7 @@ export class ScriptTasksService {
     return { total, data: files };
   }
 
-  async findScriptFileById(id: number): Promise<ScriptFile> {
+  async findScriptFileById(id: string): Promise<ScriptFile> {
     const file = await this.scriptFileRepository.findOne({
       where: { id },
       relations: ['creator'],
@@ -75,7 +75,7 @@ export class ScriptTasksService {
   }
 
   // 脚本任务相关方法
-  async createScriptTask(createScriptTaskDto: CreateScriptTaskDto, staffId: number): Promise<ScriptTask> {
+  async createScriptTask(createScriptTaskDto: CreateScriptTaskDto, staffId: string): Promise<ScriptTask> {
     // 检查脚本文件是否存在
     await this.findScriptFileById(createScriptTaskDto.scriptId);
     
@@ -128,7 +128,7 @@ export class ScriptTasksService {
     return { total, data: tasks };
   }
 
-  async findScriptTaskById(id: number): Promise<ScriptTask> {
+  async findScriptTaskById(id: string): Promise<ScriptTask> {
     const task = await this.scriptTaskRepository.findOne({
       where: { id },
       relations: ['script', 'creator'],
@@ -141,7 +141,7 @@ export class ScriptTasksService {
     return task;
   }
 
-  async updateScriptTaskStatus(id: number, status: ScriptTaskStatus, staffId: number): Promise<ScriptTask> {
+  async updateScriptTaskStatus(id: string, status: ScriptTaskStatus, staffId: string): Promise<ScriptTask> {
     const task = await this.findScriptTaskById(id);
     
     task.status = status;
@@ -158,7 +158,7 @@ export class ScriptTasksService {
     return this.scriptTaskLogRepository.save(log);
   }
 
-  async findScriptTaskLogs(taskId: number, query: {
+  async findScriptTaskLogs(taskId: string, query: {
     page?: number;
     pageSize?: number;
     status?: ScriptTaskLogStatus;
@@ -190,7 +190,7 @@ export class ScriptTasksService {
   }
 
   // 执行任务
-  async executeScriptTask(taskId: number, staffId: number): Promise<{ success: boolean; message: string }> {
+  async executeScriptTask(taskId: string, staffId: string): Promise<{ success: boolean; message: string }> {
     const task = await this.findScriptTaskById(taskId);
     
     if (task.status !== ScriptTaskStatus.PENDING) {

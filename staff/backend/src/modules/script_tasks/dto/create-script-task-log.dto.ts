@@ -1,10 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ScriptTaskLogStatus } from '@entities';
 
 export class CreateScriptTaskLogDto {
   @IsNotEmpty({ message: '任务ID不能为空' })
-  @IsNumber({}, { message: '任务ID必须是数字' })
-  taskId: number;
+  @IsString({ message: '任务ID必须是字符串' })
+  taskId: string;
 
   @IsNotEmpty({ message: '日志内容不能为空' })
   @IsString()

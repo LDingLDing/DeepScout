@@ -8,8 +8,8 @@ export enum StaffRole {
 
 @Entity('staff_user')
 export class StaffUser {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   email: string;

@@ -20,7 +20,7 @@ export class StaffService {
     return this.staffRepository.find();
   }
 
-  async findOne(id: number): Promise<StaffUser> {
+  async findOne(id: string): Promise<StaffUser> {
     const staff = await this.staffRepository.findOne({ where: { id } });
     if (!staff) {
       throw new NotFoundException(`Staff with ID ${id} not found`);
@@ -54,7 +54,7 @@ export class StaffService {
     return this.staffRepository.save(staff);
   }
 
-  async update(id: number, updateStaffDto: UpdateStaffDto): Promise<StaffUser> {
+  async update(id: string, updateStaffDto: UpdateStaffDto): Promise<StaffUser> {
     const staff = await this.findOne(id);
 
     // 如果更新密码，需要加密
@@ -75,7 +75,7 @@ export class StaffService {
     return this.staffRepository.save(staff);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const staff = await this.findOne(id);
     await this.staffRepository.remove(staff);
   }
@@ -110,7 +110,7 @@ export class StaffService {
     };
   }
 
-  async resetPassword(id: number, password: string): Promise<StaffUser> {
+  async resetPassword(id: string, password: string): Promise<StaffUser> {
     if (!password) {
       throw new Error('Password is required');
     }

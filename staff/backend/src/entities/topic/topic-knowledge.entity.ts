@@ -18,11 +18,11 @@ import { ScriptTask } from '@entities';
 
 @Entity('topic_knowledge')
 export class TopicKnowledge {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'topic_id' })
-  topic_id: number;
+  topic_id: string;
 
   @Column({ type: 'text' })
   content: string;
@@ -31,7 +31,7 @@ export class TopicKnowledge {
   created_at: Date;
 
   @Column({ name: 'created_by_taskid' })
-  created_by_taskid: number;
+  created_by_taskid: string;
 
   @ManyToOne(() => Topic)
   @JoinColumn({ name: 'topic_id' })

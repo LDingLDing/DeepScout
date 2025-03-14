@@ -4,9 +4,9 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 @ObjectType()
 @Entity('script_file')
 export class ScriptFile {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field(() => String)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Field()
   @Column({ name: 'file_name' })

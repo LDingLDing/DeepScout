@@ -24,11 +24,11 @@ export enum ScriptTaskStatus {
 
 @Entity('script_task')
 export class ScriptTask {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'script_id' })
-  script_id: number;
+  script_id: string;
 
   @Column({
     type: 'enum',

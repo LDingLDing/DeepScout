@@ -5,9 +5,9 @@ export enum TaskStatus {
 }
 
 export interface Task {
-  id: number;
+  id: string;
   name: string;
-  sourceId: number;
+  sourceId: string;
   sourceName?: string;
   description?: string;
   currentVersionId?: number;
@@ -21,14 +21,14 @@ export interface Task {
   createdAt: string;
   updatedAt: string;
   creator?: {
-    id: number;
+    id: string;
     username: string;
   };
 }
 
 export interface TaskVersion {
-  id: number;
-  taskId: number;
+  id: string;
+  taskId: string;
   version: number;
   code: string;
   config?: Record<string, any>;
@@ -36,7 +36,7 @@ export interface TaskVersion {
   createdBy: number;
   createdAt: string;
   creator?: {
-    id: number;
+    id: string;
     username: string;
   };
 }

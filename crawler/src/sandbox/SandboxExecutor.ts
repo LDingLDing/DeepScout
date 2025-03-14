@@ -13,7 +13,7 @@ export class SandboxExecutor {
     this.logger = new Logger();
   }
 
-  public async execute(scriptContent: string, taskId: number): Promise<void> {
+  public async execute(scriptContent: string, taskId: string): Promise<void> {
     const isolate = new ivm.Isolate({ memoryLimit: 128 });
     const context = await isolate.createContext();
     const jail = context.global;
