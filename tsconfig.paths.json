@@ -2,8 +2,19 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@entities/*": ["staff/backend/src/entities/*"],
-      "@entities": ["staff/backend/src/entities"]
+      "@entities/*": [
+        "staff/backend/src/entities/*",
+        "staff/backend/dist/entities/*"
+      ],
+      "@entities": [
+        "staff/backend/src/entities",
+        "staff/backend/dist/entities"
+      ],
+      "@crawler/*": ["crawler/src/*"],
+      "@staff/frontend/*": ["staff/frontend/src/*"],
+      "@staff/backend/*": ["staff/backend/src/*"],
+      "@client/frontend/*": ["client/frontend/src/*"],
+      "@client/backend/*": ["client/backend/src/*"]
     }
   }
 } 

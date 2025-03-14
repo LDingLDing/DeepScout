@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "references": [
+    {
+      "path": "./staff/backend"
+    },
+    {
+      "path": "./crawler"
+    }
+  ],
+  "files": []
+} 
