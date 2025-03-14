@@ -9,7 +9,7 @@
 - **核心价值**：通过AI增强的精准信息采集+结构化处理，帮助从业者用1/5时间完成领域动态监控  
 - **技术亮点**：  
   ▸ 基于DeepSeek R1的自然语言指令解析  
-  ▸ 动态适配的智能爬虫引擎  
+  ▸ 动态适配的智能采集引擎  
   ▸ 企业级数据安全合规方案
 ```
 
@@ -39,7 +39,7 @@ graph TD
     subgraph 服务层
         B --> C[用户服务]
         B --> D[任务调度]
-        D --> E[爬虫集群]
+        D --> E[采集集群]
         E --> F[数据清洗]
         F --> G[DeepSeek R1 API]
         G --> H[(PostgreSQL)]
@@ -56,7 +56,7 @@ graph TD
 |-----------------|-----------------------------------|--------|------------------------------|
 | **前端**        | Next.js + TypeScript             | 13.4   | 服务端渲染+组件化            |
 | **后端**        | NestJS + TypeGraphQL             | 10.0   | 渐进式框架+强类型约束        |
-| **爬虫引擎**    | Playwright + Browserless         | 1.37   | Headless浏览器兼容性         |
+| **采集引擎**    | Playwright + Browserless         | 1.37   | Headless浏览器兼容性         |
 | **AI服务**      | DeepSeek R1 API                  | 2023Q3 | 中文领域SOTA模型             |
 | **数据存储**    | PostgreSQL (JSONB)               | 15     | 结构化+非结构化混合存储      |
 | **基础设施**    | Docker + Docker Compose          | 24.0   | 环境一致性保障               |
@@ -64,7 +64,7 @@ graph TD
 ---
 
 ## 三、核心模块设计
-### 3.1 智能爬虫引擎
+### 3.1 智能采集引擎
 #### 工作流程
 ```mermaid
 sequenceDiagram

@@ -1,34 +1,41 @@
 import winston from 'winston';
 
-// 定义日志格式
-const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`
-  )
-);
+export class Logger {
+  private logger: winston.Logger;
 
-// 创建日志记录器实例
-export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
-  format: logFormat,
-  transports: [
-    // 控制台输出
-    new winston.transports.Console({
+  constructor() {
+    this.logger = winston.createLogger({
+      level: 'info',
       format: winston.format.combine(
-        winston.format.colorize(),
-        logFormat
-      )
-    }),
-    // 文件输出
-    new winston.transports.File({ 
-      filename: 'logs/error.log', 
-      level: 'error' 
-    }),
-    new winston.transports.File({ 
-      filename: 'logs/combined.log' 
-    })
-  ]
-});
+        winston.format.timestamp(),
+        winston.format.json()
+      ),
+      transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' }),
+      ],
+    });
 
-export default logger;
+    if (process.env.NODE_ENV !== 'production') {
+      this.logger.add(new winston.transports.Console({
+        format: winston.format.simple(),
+      }));
+    }
+  }
+
+  public info(message: string, meta?: any) {
+    this.logger.info(message, meta);
+  }
+
+  public error(message: string, meta?: any) {
+    this.logger.error(message, meta);
+  }
+
+  public warn(message: string, meta?: any) {
+    this.logger.warn(message, meta);
+  }
+
+  public debug(message: string, meta?: any) {
+    this.logger.debug(message, meta);
+  }
+} 

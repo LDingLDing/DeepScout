@@ -150,9 +150,9 @@ const DashboardPage: React.FC = () => {
       key: 'sourceType',
       render: (type: string) => {
         const typeMap: Record<string, string> = {
-          web: 'Web爬虫',
+          web: 'Web采集',
           rss: 'RSS解析',
-          wechat: '微信公众号爬虫'
+          wechat: '微信公众号采集'
         };
         return typeMap[type] || type;
       },

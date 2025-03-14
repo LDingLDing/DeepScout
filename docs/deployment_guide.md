@@ -158,7 +158,7 @@
    pnpm run dev
    ```
 
-6. 启动爬虫服务（可选）：
+6. 启动采集服务（可选）：
 
    ```bash
    cd crawler
@@ -336,7 +336,7 @@ pnpm run seed
    cd ../../staff/backend
    pnpm run build
 
-   # 构建爬虫服务
+   # 构建采集服务
    cd ../../crawler
    pnpm run build
    ```
@@ -363,7 +363,7 @@ pnpm run seed
    cd ../../staff/frontend
    pm2 start node_modules/next/dist/bin/next --name staff-frontend -- start -p 3002
 
-   # 启动爬虫服务
+   # 启动采集服务
    cd ../../crawler
    pm2 start dist/main.js --name crawler
 

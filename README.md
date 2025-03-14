@@ -19,6 +19,8 @@ InfoRadar 是一款基于 AI 增强的信息雷达，通过精准信息采集和
 - Docker 24.0+
 - Docker Compose
 - PostgreSQL 15
+- Python 3.x (用于编译原生模块)
+- C++ 编译工具链 (用于编译原生模块)
 
 ### 安装与运行
 
@@ -84,6 +86,114 @@ docker-compose up -d
    - 如遇到GraphQL Schema错误，确保至少定义了一个查询类型
    - 数据库连接问题，检查`.env`文件中的数据库配置是否正确
    - 更多详细信息请参考`docs/部署指南.md`
+
+## isolated-vm 原生模块说明
+
+本项目的采集服务 (crawler) 使用了 isolated-vm 库来提供安全的沙箱环境。由于 isolated-vm 是一个原生模块，需要在不同环境下进行编译，以下是相关说明：
+
+### Windows 环境
+
+在 Windows 环境下，isolated-vm 可能需要手动编译：
+
+1. **安装必要的构建工具**：
+   ```bash
+   # 安装 node-gyp
+   npm install -g node-gyp
+
+   # 安装 Visual Studio Build Tools (推荐)
+   # 下载并安装：https://visualstudio.microsoft.com/visual-cpp-build-tools/
+   # 安装时选择"C++ 构建工具"工作负载
+   ```
+
+2. **手动编译 isolated-vm**：
+   ```bash
+   # 进入 isolated-vm 模块目录
+   cd node_modules/isolated-vm
+   
+   # 重新构建
+   node-gyp rebuild
+   
+   # 返回项目根目录
+   cd ../..
+   ```
+
+### Linux 环境
+
+在 Linux 环境下，确保安装了必要的构建工具：
+
+```bash
+# Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y python3 make g++ build-essential
+
+# CentOS/RHEL
+sudo yum install -y python3 make gcc-c++ kernel-devel
+
+# 安装后重新安装 isolated-vm
+pnpm remove isolated-vm
+pnpm add isolated-vm
+```
+
+### macOS 环境
+
+在 macOS 环境下，确保安装了 Xcode 命令行工具：
+
+```bash
+# 安装 Xcode 命令行工具
+xcode-select --install
+
+# 安装后重新安装 isolated-vm
+pnpm remove isolated-vm
+pnpm add isolated-vm
+```
+
+### Docker 环境
+
+在 Docker 环境中，确保 Dockerfile 包含必要的构建工具：
+
+```dockerfile
+# 在 Dockerfile 中添加
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    build-essential
+```
+
+### 故障排除
+
+如果遇到 isolated-vm 编译问题：
+
+1. **清除缓存并重新安装**：
+   ```bash
+   pnpm cache clean
+   pnpm remove isolated-vm
+   pnpm add isolated-vm
+   ```
+
+2. **指定 Python 路径**：
+   ```bash
+   # Windows
+   set npm_config_python=C:\Path\To\Your\Python\python.exe
+   
+   # Linux/macOS
+   export npm_config_python=/path/to/your/python3
+   
+   pnpm remove isolated-vm
+   pnpm add isolated-vm
+   ```
+
+3. **使用预编译二进制版本**：
+   ```bash
+   # Windows
+   set npm_config_isolated_vm_binary=true
+   
+   # Linux/macOS
+   export npm_config_isolated_vm_binary=true
+   
+   pnpm remove isolated-vm
+   pnpm add isolated-vm
+   ```
 
 ## 贡献指南
 
