@@ -26,6 +26,7 @@ async function main() {
       database: process.env.DB_DATABASE,
       entities: [ScriptFile, ScriptTask, ScriptTaskLog],
       synchronize: true,
+      logging: true, // 启用SQL日志，便于调试
     });
 
     // 初始化数据源
@@ -37,8 +38,10 @@ async function main() {
     await scheduler.start();
     logger.info('Crawler service started successfully');
   } catch (error) {
+    logger.error("Failed to start crawler service:", error);
+    // 打印更详细的错误堆栈
     if (error instanceof Error) {
-      logger.error('Failed to start crawler service:', error.message);
+      logger.error("Error details:", error.stack);
     }
     process.exit(1);
   }

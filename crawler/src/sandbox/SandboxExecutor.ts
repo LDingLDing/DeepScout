@@ -20,59 +20,65 @@ export class SandboxExecutor {
     const logRepository = this.dataSource.getRepository(ScriptTaskLog);
 
     // 创建日志函数
-    async function logMessage(message: string, level: ScriptTaskLogStatus) {
-      await logRepository.save({
-        taskId,
-        content: message,
-        status: level
-      });
-    }
+    const logToDb = async (message: string, level: ScriptTaskLogStatus) => {
+      try {
+        const safeMessage = String(message);
+        
+        await logRepository.save({
+          taskId, 
+          content: safeMessage,
+          status: level
+        });
+        this.logger.info(`Log saved for task ${taskId}: ${safeMessage.substring(0, 50)}...`);
+      } catch (error) {
+        this.logger.error(`Failed to save log for task ${taskId}:`, error);
+      }
+    };
 
-    // 注入全局函数
-    const log = new ivm.Callback(async (message: string, level: string = 'INFO') => {
-      await logMessage(message, level as ScriptTaskLogStatus);
-    });
+    // 注入简单的日志函数
+    await jail.set('log', new ivm.Callback(async (message: any) => {
+      const safeMessage = String(message);
+      await logToDb(safeMessage, ScriptTaskLogStatus.INFO);
+    }));
 
-    await jail.set('log', log);
-
-    // 注入浏览器初始化函数
-    const initBrowser = new ivm.Callback(async () => {
-      const browser = await chromium.launch();
-      const browserContext = await browser.newContext();
-      const page = await browserContext.newPage();
-      return { browser, context: browserContext, page };
-    });
-
-    await jail.set('initBrowser', initBrowser);
-
-    // 注入控制台函数
-    await jail.set('console', {
-      log: new ivm.Callback(async (message: string) => {
-        await logMessage(message, ScriptTaskLogStatus.INFO);
-      }),
-      error: new ivm.Callback(async (message: string) => {
-        await logMessage(message, ScriptTaskLogStatus.ERROR);
-      })
-    });
+    // 注入简单的错误日志函数
+    await jail.set('logError', new ivm.Callback(async (message: any) => {
+      const safeMessage = String(message);
+      await logToDb(safeMessage, ScriptTaskLogStatus.ERROR);
+    }));
 
     try {
-      // 执行脚本
+      // 执行脚本，使用简单的日志函数
       const script = await isolate.compileScript(`
         async function main() {
-          ${scriptContent}
+          // 定义控制台对象
+          const console = {
+            log: function(msg) { log(String(msg)); },
+            error: function(msg) { logError(String(msg)); },
+            warn: function(msg) { logWarn(String(msg)); }
+          };
+          
+          try {
+            ${scriptContent}
+          } catch (e) {
+            logError('Script execution error: ' + e.message);
+          }
         }
-        main();
+        main().catch(e => logError('Async error: ' + e.message));
       `);
       
       await script.run(context);
+      this.logger.info(`Script execution completed for task ${taskId}`);
     } catch (error) {
+      this.logger.error(`Script execution failed for task ${taskId}:`, error);
       if (error instanceof Error) {
-        await logMessage(error.message, ScriptTaskLogStatus.ERROR);
+        await logToDb(error.message, ScriptTaskLogStatus.ERROR);
       }
       throw error;
     } finally {
       // 释放资源
       isolate.dispose();
+      this.logger.info(`Resources released for task ${taskId}`);
     }
   }
 } 
