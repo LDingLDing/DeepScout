@@ -37,6 +37,15 @@ export class ScriptTask {
   })
   status: ScriptTaskStatus;
 
+  @Column({ type: 'timestamp', name: 'expected_run_time', nullable: true })
+  expected_run_time: Date;
+
+  @Column({ type: 'timestamp', name: 'started_at', nullable: true })
+  started_at: Date;
+
+  @Column({ type: 'timestamp', name: 'finished_at', nullable: true })
+  finished_at: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 

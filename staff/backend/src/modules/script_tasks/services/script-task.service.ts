@@ -28,7 +28,7 @@ export class ScriptTaskService {
   async findAll(): Promise<ScriptTask[]> {
     return this.scriptTaskRepository.find({
       relations: ['script'],
-      order: { createdAt: 'DESC' }
+      order: { created_at: 'DESC' }
     });
   }
 
@@ -49,5 +49,13 @@ export class ScriptTaskService {
     const scriptTask = await this.findOne(id);
     scriptTask.status = status;
     return this.scriptTaskRepository.save(scriptTask);
+  }
+
+  async update(id: number, task: Partial<ScriptTask>) {
+    return this.scriptTaskRepository.update(id, task);
+  }
+
+  async remove(id: number) {
+    return this.scriptTaskRepository.delete(id);
   }
 }

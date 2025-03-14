@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ScriptFile } from '@entities';
+import { ScriptFile } from '@entities/script_tasks/script-file.entity';
 import { CreateScriptFileDto } from '../dto/create-script-file.dto';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class ScriptFileService {
 
   async findAll(): Promise<ScriptFile[]> {
     return this.scriptFileRepository.find({
-      order: { createdAt: 'DESC' }
+      order: { created_at: 'DESC' }
     });
   }
 
@@ -30,10 +30,18 @@ export class ScriptFileService {
     return scriptFile;
   }
 
-  async findLatestByFileName(fileName: string): Promise<ScriptFile> {
+  async findByFileName(fileName: string): Promise<ScriptFile> {
     return this.scriptFileRepository.findOne({
-      where: { fileName },
-      order: { createdAt: 'DESC' }
+      where: { file_name: fileName },
+      order: { created_at: 'DESC' }
     });
+  }
+
+  async update(id: number, file: Partial<ScriptFile>) {
+    return this.scriptFileRepository.update(id, file);
+  }
+
+  async remove(id: number) {
+    return this.scriptFileRepository.delete(id);
   }
 }
